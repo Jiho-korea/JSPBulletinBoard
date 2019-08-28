@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee;"
+	         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+	             http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	         version="3.1"
+	         
+	         >
+		<!-- application 객체가 다루는 초기화 파라미터 -->	
+		<context-param>
+			<description>시스템 이름</description>
+			<param-name>systemName</param-name>
+			<param-value>ClosedDocumentManagementSystem</param-value>
+		</context-param>
+		<context-param>
+			<description>관리 모듈</description>
+			<param-name>adminmodule</param-name>
+			<param-value>false</param-value>
+		</context-param>
+		<context-param>
+			<description>서비스 레벨</description>
+			<param-name>serviceLevel</param-name>
+			<param-value>2</param-value>
+		</context-param>
+
+ 		<error-page>
+			<exception-type>home.InsufficientBalanceException</exception-type>
+			<location>/from/insufficientBalanceExceptionErrorPage.jsp</location>
+		</error-page>
+		
+		<servlet>
+			<servlet-name>mysqlDriverLoader</servlet-name>
+			<servlet-class>JDBCDriver.MySQLJDBCDriverLoader</servlet-class>
+			<load-on-startup>1</load-on-startup>
+		</servlet>
+	 	
+	 	
+	 	<servlet>
+			<servlet-name>now</servlet-name>
+			<servlet-class>servlet.NowServlet</servlet-class>
+		</servlet>
+		<servlet-mapping>
+			<servlet-name>now</servlet-name>
+			<url-pattern>/now</url-pattern>
+		</servlet-mapping>
+		
+		
+		<servlet>
+			<servlet-name>ServletInitUsingParameter</servlet-name>
+			<servlet-class>servlet.ServletInitUP</servlet-class>
+			<init-param>
+				<param-name>dept</param-name>
+				<param-value>Dept</param-value>
+			</init-param>
+			<init-param>
+				<param-name>subject</param-name>
+				<param-value>JSP</param-value>
+			</init-param>
+			<load-on-startup>1</load-on-startup>
+		</servlet>
+		
+		<servlet-mapping>
+			<servlet-name>ServletInitUsingParameter</servlet-name>
+			<url-pattern>/ServletInitUP</url-pattern>
+		</servlet-mapping>
+	</web-app>
