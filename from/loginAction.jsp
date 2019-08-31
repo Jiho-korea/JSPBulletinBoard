@@ -3,12 +3,12 @@
     pageEncoding="UTF-8"%>
 <%
 	String bool = request.getParameter("memory");    
-	String userID = request.getParameter("userID");    
+	String SID = request.getParameter("SID");    
 	String userPassword = request.getParameter("userPassword");    
 	if(userPassword.equals("password")){
-		session.setAttribute("login", userID);
+		session.setAttribute("login", SID);
 		if(bool != null&&(bool.equals("memory"))){
-				session.setAttribute("login1", userID);
+				session.setAttribute("login1", SID);
 		}else{
 				session.removeAttribute("login1");
 		}
