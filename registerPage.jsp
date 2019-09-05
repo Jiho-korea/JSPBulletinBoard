@@ -13,11 +13,8 @@
 	
 		}
 	</style>
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js">
-    
-	</script>
-	<script>	
-	</script>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	
 	<title>회원가입 페이지</title>
 </head>
@@ -25,7 +22,7 @@
 	<div class="container"   id="main">
 	<div class="jumbotron">
 	     <h4 class="mb-4">회원가입</h4>
-	      <form class="form-signin"  method ="post"  action="<%= request.getContextPath() %>/from/registerAction.jsp">
+	      <form class="form-signin"  method ="post"  action="<%= request.getContextPath() %>/from/registerAction.jsp"  onsubmit="return clickEvent()">
 	            <input type="text" class="form-control"  name="userName" placeholder="이름"  required oninvalid="this.setCustomValidity('이름을 입력해 주세요.')">
 	       
 				<br class="mb-4">
@@ -51,19 +48,30 @@
 	     
  	          	
  	          	<br class="mb-4">
- 	          
+ 	          	
 				<input type="text" class="form-control" name="subject" placeholder="학과"   required oninvalid="this.setCustomValidity('학과를 입력해 주세요.')">
  	          	
  	          	<br class="mb-4">
  	          
         	<hr class="mb-4">
-        	<button class="btn btn-primary btn-lg btn-block" type="submit">회원가입</button>
+        	<button id="btn_register" class="btn btn-primary btn-lg btn-block" type="submit">회원가입</button>
      	 	</form>
    		</div>
     
     </div>
-    <h1 id="h1">안녕?</h1>
-    
-	
 </body>
+<script type="text/javascript">
+	
+	
+	$("#btn_register").click(function clickEvent(){
+		var userPassword = $("#userPassword").val();
+		var checkPassword = $("#checkPassword").val();
+		if(userPassword != checkPassword){
+			alert("비밀번호를 다시 확인해주세요.");
+			return false;
+		}else{
+			return true;
+		}
+	});
+</script>
 </html>
