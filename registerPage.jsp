@@ -22,7 +22,7 @@
 	<div class="container"   id="main">
 	<div class="jumbotron">
 	     <h4 class="mb-4">회원가입</h4>
-	      <form class="form-signin"  method ="post"  action="<%= request.getContextPath() %>/from/registerAction.jsp"  onsubmit="return clickEvent()">
+	      <form class="form-signin"  method ="post"  action="<%= request.getContextPath() %>/action/registerAction.jsp"  onsubmit="return clickEvent()">
 	            <input type="text" class="form-control"  name="userName" placeholder="이름"  required oninvalid="this.setCustomValidity('이름을 입력해 주세요.')">
 	       
 				<br class="mb-4">

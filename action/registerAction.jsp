@@ -1,3 +1,6 @@
+<%@page import="jspBulletinBoard.Application"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="jspBulletinBoard.Student"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -15,6 +18,12 @@
 	String grade = request.getParameter("grade");
 	String subject = request.getParameter("subject");
 
+/*	List<Object> parameters = new ArrayList<Object>();
+	parameters.add(Integer.parseInt(SID));
+	parameters.add(userName);
+	parameters.add(userPassword);
+	parameters.add(Integer.parseInt(grade));
+	parameters.add(subject); */
 	
 %>
 <!DOCTYPE html>
@@ -26,6 +35,7 @@
 <body>
 
 <%
+
 	try {
 		// JDBC 드라이버 로딩
 		Class.forName("com.mysql.cj.jdbc.Driver"); 
@@ -43,7 +53,7 @@
 
 	try{
 	// 데이터베이스 연결
-		connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/jspBulletinBoard?useSSL=false&serverTimezone=UTC", "root", "1111");
+		connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/jspbulletinboard?useSSL=false&serverTimezone=UTC", "root", "1111");
 	
 	//쿼리문 처리 객체 생성
 		preparedStatement = connection.prepareStatement("SELECT * FROM student WHERE SID = ?");
@@ -57,8 +67,6 @@
 			
 <%		
 		}else{ %>
-			
-			<h1>아이디가 존재하지 않습니다.</h1>
 <% 		
 			preparedStatement2 = connection.prepareStatement("INSERT INTO student VAlUES(?,?,?,?,?,0)");
 			preparedStatement2.setInt(1,Integer.parseInt(SID));
@@ -110,13 +118,33 @@
 <%  
 	if(updateQuery == 1){ %>
 		<script>
-			alert("회원가입 완료. 로그인 해주세요.")
+			alert("회원가입 완료. 로그인 해주세요.");
+			
+			 window.location = '../loginFormPage.jsp';
 		</script>
-		
-		<jsp:forward page="/from/fromLoginPage.jsp"  />
-		
+	
 <%}
-%>
+%>   
+<%--
+<%
+
+	Application app = new Application();
+	int result = app.view(parameters);
+	
+	if(result == 0){ %>
+		<script>
+			alert("이미 같은 학번이 존재합니다.");
+			history.go(-1)
+		</script>
+<%}else if(result ==1){ %>
+		<jsp:forward page="../WEB-INF/successRegisterationPage.jsp"/>
+<%}else{ %>
+		<script>
+			alert("회원가입 실패.");
+			history.go(-1)
+		</script>
+<%}
+%>  --%>
 
 </body>
 </html>
