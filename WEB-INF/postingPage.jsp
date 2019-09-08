@@ -8,17 +8,8 @@
 	String SID = (String)session.getAttribute("login");
 
 	Student student = getPersonalInfo(Integer.parseInt(SID));
-	
-	Connection connection = null;
-	PreparedStatement preparedStatement = null;
-	ResultSet resultSet = null;
-	
-	
+
 	ConnectDB connectDB = new ConnectDB();
-	connection = connectDB.connect();
-	
-	preparedStatement = connection.prepareStatement("SELECT * FROM post WHERE AVAILABLE = 1 ORDER BY POST_NO DESC");
-	resultSet = preparedStatement.executeQuery();
 %>
 <!DOCTYPE html>
 <html>
@@ -34,7 +25,7 @@
 		}
 	</style>
 	
-	<title>게시판메인페이지</title>
+	<title>게시판작성페이지</title>
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
@@ -67,36 +58,26 @@
 </nav>
 
 <div class="container" style="margin-top:60px">
-	<div class="row">
-		<table class="table table-striped" style="text-align: center; border: 1px solid  #dddddd">
-			<thead>
-				<tr>
-					<th style="background-color: #eeeeee; text-align: center; width:15%">글번호</th>
-					<th style="background-color: #eeeeee; text-align: center; width:55%">제목</th>
-					<th style="background-color: #eeeeee; text-align: center; width:10%">작성자</th>
-					<th style="background-color: #eeeeee; text-align: center; width:20%">작성일</th>
-				</tr>
-			</thead>
-			<tbody>
-				
-					<%
-						while(resultSet.next()){
-							String name =	getPersonalInfo(resultSet.getInt("SID")).getName();
-					%>
+	<div class="row-col" >
+		<form method="post" action="writeAction.jsp">
+			<table class="table table-striped" style="text-align: center; border: 1px solid  #dddddd">
+				<thead>
 					<tr>
-					<td><%= resultSet.getInt("POST_NO") %></td>
-					<td><%= resultSet.getString("CONTENT") %></td>
-					<td><%= name.trim() %></td>
-					<td><%= resultSet.getDate("POSTINGDATE") %></td>
+						<th colspan="2" style="background-color: #eeeeee; text-align: center;">게시판 글쓰기 양식</th>
 					</tr>
-					<%
-						}
-						connectDB.release();
-					%>
-				
-			</tbody>
-		</table>
-		<a href="<%=request.getContextPath() %>/from/fromPostingPage.jsp" class="btn btn-primary pull-right"   style="margin-left:91%">글쓰기</a>
+				</thead>
+				<tbody>
+					<tr>
+						<td><input type="text" class="form-control" placeholder="글 제목" name="title" maxlength="30"></td>
+					</tr>
+					<tr>
+						<td><textarea class="form-control" placeholder="글 내용" name="content" maxlength="2048" style="height: 350px;"></textarea></td>
+					</tr>
+				</tbody>
+			</table>
+			<input type="submit"  class="btn btn-primary pull-right"   style="margin-left:91%" value="글쓰기"/>
+		</form>
+		
 	</div>
 </div>
 </body>
