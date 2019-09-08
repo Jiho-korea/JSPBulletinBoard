@@ -1,0 +1,70 @@
+<%@page import="jspBulletinBoard.Student"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@page import="java.sql.DriverManager"%>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.PreparedStatement" %>
+<%@ page import="java.sql.ResultSet" %>
+<%@ page import="java.sql.SQLException" %>
+<%!
+	public Student getPersonalInfo(int SID){
+		try{
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		}catch(ClassNotFoundException e){
+			throw new RuntimeException(e);
+		}
+		
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Student student = new Student();
+		
+		try{
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/jspbulletinboard?useSSL=false&serverTimezone=UTC","root","1111");
+		
+			preparedStatement = connection.prepareStatement("SELECT NAME,PASSWORD,GRADE,SUBJECT,MANAGER FROM student WHERE SID = ?");
+			preparedStatement.setInt(1, SID);
+			
+			resultSet = preparedStatement.executeQuery();
+			
+	
+			if(resultSet.next()){
+				student.setSid(SID);
+				student.setName(resultSet.getString("NAME"));
+				student.setPassword(resultSet.getString("PASSWORD"));
+				student.setGrade(resultSet.getInt("GRADE"));
+				student.setSubject(resultSet.getString("SUBJECT"));
+				student.setManager(resultSet.getInt("MANAGER")); 
+			}
+			
+			return student;		
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			if(resultSet != null){
+				try{
+					resultSet.close();
+				}catch(SQLException e){
+					
+				}
+			}
+			if(preparedStatement != null){
+				try{
+					preparedStatement.close();
+				}catch(SQLException e){
+				
+				}
+			}
+			if(connection != null){
+				try{
+					connection.close();
+				}catch(SQLException e){
+				
+				}
+			}
+		}
+		return student;
+	}
+%>

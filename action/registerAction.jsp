@@ -1,10 +1,10 @@
-<%@page import="jspBulletinBoard.Application"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
-<%@page import="java.sql.DriverManager"%>
+
 <%@page import="jspBulletinBoard.Student"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="java.sql.DriverManager"%>
 <%@ page import="java.sql.Connection" %>
 <%@ page import="java.sql.PreparedStatement" %>
 <%@ page import="java.sql.ResultSet" %>
@@ -23,7 +23,7 @@
 	parameters.add(userName);
 	parameters.add(userPassword);
 	parameters.add(Integer.parseInt(grade));
-	parameters.add(subject); */
+	parameters.add(subject);  */
 	
 %>
 <!DOCTYPE html>
@@ -125,11 +125,13 @@
 	
 <%}
 %>   
-<%--
+
+<%-- 
+<%@ include file="../included/application.jspf" %>
 <%
 
-	Application app = new Application();
-	int result = app.view(parameters);
+	
+	int result = view(parameters);
 	
 	if(result == 0){ %>
 		<script>
@@ -137,14 +139,18 @@
 			history.go(-1)
 		</script>
 <%}else if(result ==1){ %>
-		<jsp:forward page="../WEB-INF/successRegisterationPage.jsp"/>
+		<script>
+			alert("회원가입 완료. 로그인 해주세요.");
+			
+			 window.location = '../loginFormPage.jsp';
+		</script>
 <%}else{ %>
 		<script>
 			alert("회원가입 실패.");
 			history.go(-1)
 		</script>
 <%}
-%>  --%>
-
+%>  
+--%>
 </body>
 </html>

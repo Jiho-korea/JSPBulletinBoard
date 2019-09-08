@@ -8,18 +8,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>게시판메인페이지</title>
 </head>
 <body>
 <%
-	if(loginAttribute){
-		session.removeAttribute("login");
-	%>
-		<jsp:forward page="../loginFormPage.jsp"/>
+	if(loginAttribute){%>
+		<jsp:forward page="../WEB-INF/boardPage.jsp"/>
 <%}else{ 
 		response.sendRedirect("../loginFormPage.jsp");
 	}
 %>
-	
 </body>
 </html>
