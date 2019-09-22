@@ -22,11 +22,6 @@
 			<param-name>serviceLevel</param-name>
 			<param-value>2</param-value>
 		</context-param>
-
- 		<error-page>
-			<exception-type>home.InsufficientBalanceException</exception-type>
-			<location>/from/insufficientBalanceExceptionErrorPage.jsp</location>
-		</error-page>
 		
 		<servlet>
 			<servlet-name>mysqlDriverLoader</servlet-name>
@@ -34,33 +29,12 @@
 			<load-on-startup>1</load-on-startup>
 		</servlet>
 	 	
-	 	
-	 	<servlet>
-			<servlet-name>now</servlet-name>
-			<servlet-class>servlet.NowServlet</servlet-class>
-		</servlet>
-		<servlet-mapping>
-			<servlet-name>now</servlet-name>
-			<url-pattern>/now</url-pattern>
-		</servlet-mapping>
-		
-		
-		<servlet>
-			<servlet-name>ServletInitUsingParameter</servlet-name>
-			<servlet-class>servlet.ServletInitUP</servlet-class>
-			<init-param>
-				<param-name>dept</param-name>
-				<param-value>Dept</param-value>
-			</init-param>
-			<init-param>
-				<param-name>subject</param-name>
-				<param-value>JSP</param-value>
-			</init-param>
-			<load-on-startup>1</load-on-startup>
-		</servlet>
-		
-		<servlet-mapping>
-			<servlet-name>ServletInitUsingParameter</servlet-name>
-			<url-pattern>/ServletInitUP</url-pattern>
-		</servlet-mapping>
+	 	<filter>
+	 		<filter-name>LoginCheckFilter</filter-name>
+	 		<filter-class>jspBulletinBoard.LoginCheckFilter</filter-class>
+	 	</filter>	
+		<filter-mapping>
+			<filter-name>LoginCheckFilter</filter-name>
+			<url-pattern>/from/*</url-pattern>
+		</filter-mapping>
 	</web-app>
