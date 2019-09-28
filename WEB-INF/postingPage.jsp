@@ -59,7 +59,7 @@
 
 <div class="container" style="margin-top:60px">
 	<div class="row-col" >
-		<form method="post" action="writeAction.jsp">
+		<form method="post" action="<%= request.getContextPath() %>/action/writeAction.jsp">
 			<table class="table table-striped" style="text-align: center; border: 1px solid  #dddddd">
 				<thead>
 					<tr>
@@ -68,10 +68,10 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td><input type="text" class="form-control" placeholder="글 제목" name="title" maxlength="30"></td>
+						<td><input type="text" class="form-control" placeholder="글 제목" name="title" maxlength="30" required  autofocus></td>
 					</tr>
 					<tr>
-						<td><textarea class="form-control" placeholder="글 내용" name="content" maxlength="2048" style="height: 350px;"></textarea></td>
+						<td><textarea class="form-control" placeholder="글 내용" name="content" maxlength="2048" style="height: 350px;" required></textarea></td>
 					</tr>
 				</tbody>
 			</table>
