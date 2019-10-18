@@ -7,12 +7,13 @@
 <%@ page import="java.lang.RuntimeException"  %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<jsp:useBean id="student" class="jspBulletinBoard.Student" scope="session"/>
 <%
 	request.setCharacterEncoding("utf-8");
 
 	String bool = request.getParameter("memory");    
-	String SID = request.getParameter("SID");    
-	String userPassword = request.getParameter("userPassword");    
+	String sid = request.getParameter("sid");    
+	String password = request.getParameter("password");    
 	
 	try{ 
 		Class.forName("com.mysql.cj.jdbc.Driver");
@@ -27,15 +28,15 @@
 	try{
 		connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/jspbulletinboard?useSSL=false&serverTimezone=UTC","root","1111");
 		preparedStatement = connection.prepareStatement("SELECT * FROM student WHERE SID = ? AND PASSWORD = ? ");
-		preparedStatement.setInt(1, Integer.parseInt(SID));
-		preparedStatement.setString(2,userPassword);
+		preparedStatement.setInt(1, Integer.parseInt(sid));
+		preparedStatement.setString(2,password);
 		
 		resultSet = preparedStatement.executeQuery();
 		
 		if(resultSet.first()){
-			session.setAttribute("login", SID);
+			session.setAttribute("login", sid);
 			if(bool != null&&(bool.equals("memory"))){
-					session.setAttribute("login1", SID);
+					session.setAttribute("login1", sid);
 			}else{
 					session.removeAttribute("login1");
 			}
@@ -47,6 +48,11 @@
 <title>메인페이지로 이동</title>
 </head>
 <body>
+	<jsp:setProperty property="*" name="student"/>
+	<jsp:setProperty property="name" name="student"  value="<%= resultSet.getString(\"NAME\") %>"/>
+	<jsp:setProperty property="grade" name="student"  value="<%= resultSet.getInt(\"GRADE\")%>"/>
+	<jsp:setProperty property="subject" name="student"  value="<%= resultSet.getString(\"SUBJECT\")%>"/>
+	<jsp:setProperty property="manager" name="student"  value="<%= resultSet.getInt(\"MANAGER\")%>"/>
 	<jsp:forward page="/WEB-INF/mainPage.jsp"/>
 	<%
 		}else{ %>

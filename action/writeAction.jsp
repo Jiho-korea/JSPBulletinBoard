@@ -1,14 +1,19 @@
 <%@page import="java.util.Date"%>
+<%@page import="java.sql.DriverManager"%>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.PreparedStatement" %>
+<%@ page import="java.sql.ResultSet" %>
+<%@ page import="java.sql.SQLException" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="jspBulletinBoard.ConnectDB" %>
-<%@ include file="../included/getPersonalInfo.jspf" %>
+
+<jsp:useBean id="student" class="jspBulletinBoard.Student" scope="session"/>
 <%
 
 	request.setCharacterEncoding("utf-8");
 
 	String SID = (String)session.getAttribute("login");
-	Student student = getPersonalInfo(Integer.parseInt(SID));
 	
 	ConnectDB connectDB = new ConnectDB();
 	Connection connection = connectDB.connect();

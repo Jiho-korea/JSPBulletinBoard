@@ -8,7 +8,7 @@
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="java.sql.SQLException" %>
 <%!
-	public Student getPersonalInfo(int SID){
+	public String getWriter(int sid){
 		try{
 			Class.forName("com.mysql.cj.jdbc.Driver");
 		}catch(ClassNotFoundException e){
@@ -18,27 +18,22 @@
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		Student student = new Student();
+		String writer = null;
 		
 		try{
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/jspbulletinboard?useSSL=false&serverTimezone=UTC","root","1111");
 		
-			preparedStatement = connection.prepareStatement("SELECT NAME,PASSWORD,GRADE,SUBJECT,MANAGER FROM student WHERE SID = ?");
-			preparedStatement.setInt(1, SID);
+			preparedStatement = connection.prepareStatement("SELECT NAME FROM student WHERE SID = ?");
+			preparedStatement.setInt(1, sid);
 			
 			resultSet = preparedStatement.executeQuery();
 			
 	
 			if(resultSet.next()){
-				student.setSid(SID);
-				student.setName(resultSet.getString("NAME"));
-				student.setPassword(resultSet.getString("PASSWORD"));
-				student.setGrade(resultSet.getInt("GRADE"));
-				student.setSubject(resultSet.getString("SUBJECT"));
-				student.setManager(resultSet.getInt("MANAGER")); 
+				writer = resultSet.getString("NAME");
 			}
 			
-			return student;		
+			
 			
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -65,6 +60,6 @@
 				}
 			}
 		}
-		return student;
+		return writer;		
 	}
 %>

@@ -1,6 +1,5 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
-
 <%@page import="jspBulletinBoard.Student"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -12,9 +11,9 @@
 <%
 	request.setCharacterEncoding("utf-8");
 
-	String SID = request.getParameter("SID");
-	String userName = request.getParameter("userName");
-	String userPassword = request.getParameter("userPassword");
+	String sid = request.getParameter("sid");
+	String name = request.getParameter("name");
+	String password = request.getParameter("password");
 	String grade = request.getParameter("grade");
 	String subject = request.getParameter("subject");
 
@@ -57,7 +56,7 @@
 	
 	//쿼리문 처리 객체 생성
 		preparedStatement = connection.prepareStatement("SELECT * FROM student WHERE SID = ?");
-		preparedStatement.setInt(1, Integer.parseInt(SID));
+		preparedStatement.setInt(1, Integer.parseInt(sid));
 		resultSet = preparedStatement.executeQuery();
 		if(resultSet.first()){ %>
 			<script>
@@ -69,9 +68,9 @@
 		}else{ %>
 <% 		
 			preparedStatement2 = connection.prepareStatement("INSERT INTO student VAlUES(?,?,?,?,?,0)");
-			preparedStatement2.setInt(1,Integer.parseInt(SID));
-			preparedStatement2.setString(2,userName);
-			preparedStatement2.setString(3,userPassword);
+			preparedStatement2.setInt(1,Integer.parseInt(sid));
+			preparedStatement2.setString(2,name);
+			preparedStatement2.setString(3,password);
 			preparedStatement2.setInt(4,Integer.parseInt(grade));
 			preparedStatement2.setString(5,subject);
 			
@@ -125,32 +124,5 @@
 	
 <%}
 %>   
-
-<%-- 
-<%@ include file="../included/application.jspf" %>
-<%
-
-	
-	int result = view(parameters);
-	
-	if(result == 0){ %>
-		<script>
-			alert("이미 같은 학번이 존재합니다.");
-			history.go(-1)
-		</script>
-<%}else if(result ==1){ %>
-		<script>
-			alert("회원가입 완료. 로그인 해주세요.");
-			
-			 window.location = '../loginFormPage.jsp';
-		</script>
-<%}else{ %>
-		<script>
-			alert("회원가입 실패.");
-			history.go(-1)
-		</script>
-<%}
-%>  
---%>
 </body>
 </html>

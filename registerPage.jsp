@@ -23,19 +23,19 @@
 	<div class="jumbotron">
 	     <h4 class="mb-4">회원가입</h4>
 	      <form class="form-signin"  method ="post"  action="<%= request.getContextPath() %>/action/registerAction.jsp"  onsubmit="return clickEvent()">
-	            <input type="text" class="form-control"  name="userName" placeholder="이름"  required oninvalid="this.setCustomValidity('이름을 입력해 주세요.')">
+	            <input type="text" class="form-control"  name="name" placeholder="이름"  required oninvalid="this.setCustomValidity('이름을 입력해 주세요.')">
 	       
 				<br class="mb-4">
 			
 				
-				<input type="number" class="form-control" name="SID" placeholder="학번"   required oninvalid="this.setCustomValidity('학번을 입력해 주세요.')">
+				<input type="number" class="form-control" name="sid" placeholder="학번"   required oninvalid="this.setCustomValidity('학번을 입력해 주세요.')">
         
         		<br class="mb-4">
 	
  	          	<div class="row">
           			<div class="col-md-6 mb-3">
        
-            			<input type="password" class="form-control"  name="userPassword"  id="userPassword" placeholder="비밀번호"  required oninvalid="this.setCustomValidity('비밀번호를 입력해 주세요.')">
+            			<input type="password" class="form-control"  name="password"  id="userPassword" placeholder="비밀번호"  required oninvalid="this.setCustomValidity('비밀번호를 입력해 주세요.')">
 					</div>
           			<div class="col-md-6 mb-3">
             			<input type="password" class="form-control" id="checkPassword" placeholder="비밀번호 확인"   required oninvalid="this.setCustomValidity('비밀번호를 한번 더 입력해 주세요.')">

@@ -1,24 +1,48 @@
+<%@page import="jspBulletinBoard.Post"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="java.sql.DriverManager"%>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.PreparedStatement" %>
+<%@ page import="java.sql.ResultSet" %>
+<%@ page import="java.sql.SQLException" %>
 <%@page import="jspBulletinBoard.Student"%>
-<%@ include file="../included/getPersonalInfo.jspf" %>
 <%@ page import="jspBulletinBoard.ConnectDB" %>
+<%@ include file="../included/getWriter.jspf" %>
+<jsp:useBean id="student" class="jspBulletinBoard.Student" scope="session"/>
 <%
+
 	request.setCharacterEncoding("utf-8");
 	String SID = (String)session.getAttribute("login");
-
-	Student student = getPersonalInfo(Integer.parseInt(SID));
+	int pageNumber = 1;
 	
 	Connection connection = null;
 	PreparedStatement preparedStatement = null;
 	ResultSet resultSet = null;
 	
-	
 	ConnectDB connectDB = new ConnectDB();
 	connection = connectDB.connect();
+	preparedStatement = connection.prepareStatement("SELECT POST_NO, TITLE, SID, date_format(POSTINGDATE,'%Y-%m-%d') as POSTINGDATE, CONTENT, AVAILABLE " + 
+													"FROM post WHERE AVAILABLE = 1 ORDER BY POST_NO DESC LIMIT 10 OFFSET ?");
+	preparedStatement.setInt(1, (pageNumber - 1) * 10);
 	
-	preparedStatement = connection.prepareStatement("SELECT * FROM post WHERE AVAILABLE = 1 ORDER BY POST_NO DESC");
 	resultSet = preparedStatement.executeQuery();
+	List<Post> postList = new ArrayList<Post>();
+	
+	while(resultSet.next()){
+		//POST_NO,TITLE,SID,POSTINGDATE,CONTENT,AVAILABLE
+		Post post = new Post();
+		post.setPostNo(resultSet.getInt("POST_NO"));
+		post.setTitle(resultSet.getString("TITLE"));
+		post.setSid(resultSet.getInt("SID"));
+		post.setPostingdate(resultSet.getString("POSTINGDATE"));
+		post.setContent(resultSet.getString("CONTENT"));
+		post.setAvailable(resultSet.getInt("AVAILABLE"));
+		
+		postList.add(post);
+	}
 %>
 <!DOCTYPE html>
 <html>
@@ -57,7 +81,7 @@
 
     <ul class="navbar-nav right">
     	<li class="nav-item active">
-        <a class="nav-link" >안녕하세요! <%= student.getName() %> 님!</a>
+        <a class="nav-link" >안녕하세요! <jsp:getProperty property="name" name="student"/> 님!</a>
       	</li>
       <li class="nav-item">
         <a class="nav-link" href="<%= request.getContextPath()%>/from/fromLoginPage.jsp">로그아웃</a>
@@ -80,17 +104,18 @@
 			<tbody>
 				
 					<%
-						while(resultSet.next()){
-							String name =	getPersonalInfo(resultSet.getInt("SID")).getName();
+						for(int i = 0; i<postList.size(); i++){
+							String writer = getWriter(postList.get(i).getSid());
 					%>
 					<tr>
-					<td><%= resultSet.getInt("POST_NO") %></td>
-					<td><%= resultSet.getString("CONTENT") %></td>
-					<td><%= name.trim() %></td>
-					<td><%= resultSet.getDate("POSTINGDATE") %></td>
+					<td><%= postList.get(i).getPostNo() %></td>
+					<td><%= postList.get(i).getTitle() %></td>
+					<td><%= writer%></td>
+					<td><%= postList.get(i).getPostingdate() %></td>
 					</tr>
 					<%
 						}
+					
 						connectDB.release();
 					%>
 				

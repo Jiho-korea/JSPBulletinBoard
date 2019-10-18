@@ -1,13 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@page import="jspBulletinBoard.Student"%>
-<%@ include file="../included/getPersonalInfo.jspf" %>
 <%@ page import="jspBulletinBoard.ConnectDB" %>
+<jsp:useBean id="student" class="jspBulletinBoard.Student" scope="session"/>
 <%
 	request.setCharacterEncoding("utf-8");
 	String SID = (String)session.getAttribute("login");
-
-	Student student = getPersonalInfo(Integer.parseInt(SID));
 
 	ConnectDB connectDB = new ConnectDB();
 %>
@@ -48,7 +46,7 @@
 
     <ul class="navbar-nav right">
     	<li class="nav-item active">
-        <a class="nav-link" >안녕하세요! <%= student.getName() %> 님!</a>
+        <a class="nav-link" >안녕하세요!  <jsp:getProperty property="name" name="student"/>  님!</a>
       	</li>
       <li class="nav-item">
         <a class="nav-link" href="<%= request.getContextPath()%>/from/fromLoginPage.jsp">로그아웃</a>
