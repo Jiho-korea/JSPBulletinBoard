@@ -28,7 +28,7 @@
 	<div class="container"   id="main">
 		<div class="jumbotron">
 			<form action="<%= request.getContextPath() %>/action/loginAction.jsp" class="form-signin" method="post" >
-  				<h1 class="h3 mb-3 font-weight-bold">게시판</h1>
+  				<h1 class="h3 mb-3 font-weight-bold">Bulletin Board</h1>
   			<%if(id == null){ %>
   				<input type="number" name="sid" class="form-control" placeholder="학번"  required oninvalid="this.setCustomValidity('아이디를 입력해주세요')"  autofocus="" style="margin-top:50px">
   			<%}else{ %>

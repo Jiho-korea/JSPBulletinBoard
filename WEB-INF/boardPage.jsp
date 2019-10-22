@@ -14,17 +14,40 @@
 <jsp:useBean id="student" class="jspBulletinBoard.Student" scope="session"/>
 <%
 
-	request.setCharacterEncoding("utf-8");
-	String SID = (String)session.getAttribute("login");
-	int pageNumber = 1;
-	
 	Connection connection = null;
-	PreparedStatement preparedStatement = null;
+	PreparedStatement preparedStatement = null; // 10개씩 게시글을 짤라서 테이블로 보여주는데 사용된다.
 	ResultSet resultSet = null;
+	PreparedStatement preparedStatement2 = null; // 2는 다음페이지가 있는지 확인하는 용도
+	ResultSet resultSet2 = null;
 	
 	ConnectDB connectDB = new ConnectDB();
-	connection = connectDB.connect();
-	preparedStatement = connection.prepareStatement("SELECT POST_NO, TITLE, SID, date_format(POSTINGDATE,'%Y-%m-%d') as POSTINGDATE, CONTENT, AVAILABLE " + 
+	connection = connectDB.connect();     
+	
+	
+	int pageNumber = 1;
+	if(request.getParameter("pageNumber") != null){
+		pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+	}
+	boolean nextPage = false;
+	preparedStatement2 = connection.prepareStatement("SELECT POST_NO, TITLE, SID,  POSTINGDATE, CONTENT, AVAILABLE " + 
+			"FROM post WHERE AVAILABLE = 1 ORDER BY POST_NO DESC LIMIT 10 OFFSET ?");
+	preparedStatement2.setInt(1, pageNumber * 10);
+	resultSet = preparedStatement2.executeQuery();
+	if(resultSet.next()){
+		nextPage  = true;
+	}else{
+		nextPage = false;
+	}
+
+	
+	request.setCharacterEncoding("utf-8");
+	String SID = (String)session.getAttribute("login");
+	
+	
+	
+	
+	                                           // date_format(POSTINGDATE,'%Y-%m-%d') as POSTINGDATE  으로 간단하게 뽑을 수도있다.
+	preparedStatement = connection.prepareStatement("SELECT POST_NO, TITLE, SID,  POSTINGDATE, CONTENT, AVAILABLE " + 
 													"FROM post WHERE AVAILABLE = 1 ORDER BY POST_NO DESC LIMIT 10 OFFSET ?");
 	preparedStatement.setInt(1, (pageNumber - 1) * 10);
 	
@@ -56,6 +79,10 @@
 			margin-top:50px;
 	
 		}
+		a,a:hover{
+			color : #000000;
+			text-decoration : none;'
+		}
 	</style>
 	
 	<title>게시판메인페이지</title>
@@ -63,32 +90,9 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
-<nav class="navbar navbar-expand navbar-light bg-light">
-  <a class="navbar-brand" href="<%=request.getContextPath() %>/from/fromMainPage.jsp">JSP 게시판 웹사이트</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarsExample02">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="<%=request.getContextPath() %>/from/fromMainPage.jsp">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="<%=request.getContextPath() %>/from/fromBoardPage.jsp">게시판</a>
-      </li>
-    </ul>
-
-    <ul class="navbar-nav right">
-    	<li class="nav-item active">
-        <a class="nav-link" >안녕하세요! <jsp:getProperty property="name" name="student"/> 님!</a>
-      	</li>
-      <li class="nav-item">
-        <a class="nav-link" href="<%= request.getContextPath()%>/from/fromLoginPage.jsp">로그아웃</a>
-      </li>
-    </ul>
-  </div>
-</nav>
+<jsp:include page="../included/top.jsp">
+	<jsp:param value="board" name="type"/>
+</jsp:include>
 
 <div class="container" style="margin-top:60px">
 	<div class="row">
@@ -109,9 +113,9 @@
 					%>
 					<tr>
 					<td><%= postList.get(i).getPostNo() %></td>
-					<td><%= postList.get(i).getTitle() %></td>
+					<td><a href="../from/fromPostPage.jsp?postNo=<%=postList.get(i).getPostNo() %>"><%= postList.get(i).getTitle() %></a></td>
 					<td><%= writer%></td>
-					<td><%= postList.get(i).getPostingdate() %></td>
+					<td><%= postList.get(i).getPostingdate().substring(0,11) + postList.get(i).getPostingdate().substring(11,13) +"시" + postList.get(i).getPostingdate().substring(14,16) +"분" %></td>
 					</tr>
 					<%
 						}
@@ -121,8 +125,23 @@
 				
 			</tbody>
 		</table>
-		<a href="<%=request.getContextPath() %>/from/fromPostingPage.jsp" class="btn btn-primary pull-right"   style="margin-left:91%">글쓰기</a>
-	</div>
+		</div>
+		<%
+			if(pageNumber != 1){
+		%>
+				<a href="../from/fromOtherPage.jsp?pageNumber=<%=pageNumber  - 1%>"  class="btn btn-secondary" style="margin-left: 20px">◀</a>
+		<%
+			}if(nextPage){
+		%>
+				<a href="../from/fromOtherPage.jsp?pageNumber=<%=pageNumber  + 1%>"  class="btn btn-secondary" style="margin-left: 20px">▶</a>
+		<%
+			}
+		%>
+		<div style="float : right">
+			<a href="<%=request.getContextPath() %>/from/fromPostingPage.jsp" class="btn btn-primary pull-right"  >글쓰기</a>
+		</div>
+		
 </div>
+
 </body>
 </html>
