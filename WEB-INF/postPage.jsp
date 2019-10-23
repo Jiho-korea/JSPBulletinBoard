@@ -1,3 +1,4 @@
+<%@page import="java.io.PrintWriter"%>
 <%@page import="jspBulletinBoard.Post"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -11,6 +12,14 @@
 <%@ include file="../included/getWriter.jspf" %>
 <%
 	String postNo = request.getParameter("postNo");
+
+	if(postNo == null || postNo.equals("")){
+		PrintWriter script = response.getWriter();
+		script.println("<script>");
+		script.println("alert(\"글번호가 잘못 되었습니다.\");");
+		script.println("location.href = '../from/fromBoardPage.jsp'");
+		script.println("</script>");
+	}
 
 	Connection connection = null;
 	PreparedStatement preparedStatement = null; 
@@ -63,7 +72,7 @@
 			<thead>
 				<tr>
 					<th colspan="3" style="background-color: #dddddd; text-align: center">
-						<%= post.getTitle() %> 
+						<%= post.getTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %> 
 					</th>
 				</tr>
 			</thead>
@@ -105,8 +114,8 @@
 			<a href="../from/fromBoardPage.jsp" class="btn btn-primary"  >목록</a>
 		
 		<%if(SID.equals(post.getSid()+"")){ %>
-			<a href="../from/fromUpdatePost.jsp" class="btn btn-primary"  >수정</a>
-			<a href="../from/fromDeletePost.jsp" class="btn btn-primary"  >삭제</a>
+			<a href="../from/fromUpdatePostPage.jsp?postNo=<%=post.getPostNo() %>" class="btn btn-primary"  >수정</a>
+			<a href="../from/fromDeletePostPage.jsp?postNo=<%=post.getPostNo() %>" class="btn btn-primary"  onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</a>
 			
 		<%}%>
 		</div>

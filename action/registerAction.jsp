@@ -1,3 +1,4 @@
+<%@page import="java.io.PrintWriter"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="jspBulletinBoard.Student"%>
@@ -16,7 +17,15 @@
 	String password = request.getParameter("password");
 	String grade = request.getParameter("grade");
 	String subject = request.getParameter("subject");
-
+	
+	if(sid == null || name == null || password == null || grade == null || subject == null || sid.equals("") ||subject.equals("") ||password.equals("") ||grade.equals("") ||name.equals("")){
+		PrintWriter script = response.getWriter();
+		script.println("<script>");
+		script.println("alert(\"입력안된 사항이 있습니다.\");");
+		script.println("history.go(-1)");
+		script.println("</script>");
+		
+	}
 /*	List<Object> parameters = new ArrayList<Object>();
 	parameters.add(Integer.parseInt(SID));
 	parameters.add(userName);

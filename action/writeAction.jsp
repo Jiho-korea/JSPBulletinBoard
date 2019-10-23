@@ -1,3 +1,4 @@
+<%@page import="java.io.PrintWriter"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.sql.DriverManager"%>
 <%@ page import="java.sql.Connection" %>
@@ -19,6 +20,14 @@
 	Connection connection = connectDB.connect();
 	String title = request.getParameter("title");
 	String content = request.getParameter("content");
+	
+	if(title == null || content == null || title.equals("") || content.equals("")){
+		PrintWriter script = response.getWriter();
+		script.println("<script>");
+		script.println("alert(\"입력안된 사항이 있습니다.\");");
+		script.println("history.go(-1)");
+		script.println("</script>");
+	}
 %>
 <!DOCTYPE html>
 <html>

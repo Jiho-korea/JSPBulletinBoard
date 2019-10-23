@@ -1,3 +1,4 @@
+<%@page import="java.io.PrintWriter"%>
 <%@page import="java.net.URLEncoder"%>
 <%@page import="java.sql.DriverManager"%>
 <%@ page import="java.sql.Connection" %>
@@ -14,6 +15,15 @@
 	String bool = request.getParameter("memory");    
 	String sid = request.getParameter("sid");    
 	String password = request.getParameter("password");    
+	
+	if(sid == null ||  password == null || sid.equals("") ||password.equals("")){
+		PrintWriter script = response.getWriter();
+		script.println("<script>");
+		script.println("alert(\"입력안된 사항이 있습니다.\");");
+		script.println("history.go(-1)");
+		script.println("</script>");
+		
+	}
 	
 	try{ 
 		Class.forName("com.mysql.cj.jdbc.Driver");

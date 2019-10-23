@@ -113,7 +113,7 @@
 					%>
 					<tr>
 					<td><%= postList.get(i).getPostNo() %></td>
-					<td><a href="../from/fromPostPage.jsp?postNo=<%=postList.get(i).getPostNo() %>"><%= postList.get(i).getTitle() %></a></td>
+					<td><a href="../from/fromPostPage.jsp?postNo=<%=postList.get(i).getPostNo() %>"><%= postList.get(i).getTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></a></td>
 					<td><%= writer%></td>
 					<td><%= postList.get(i).getPostingdate().substring(0,11) + postList.get(i).getPostingdate().substring(11,13) +"시" + postList.get(i).getPostingdate().substring(14,16) +"분" %></td>
 					</tr>

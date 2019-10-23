@@ -7,8 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<script>
-		location.href = "from/fromMainPage.jsp"
-	</script>
+<jsp:forward page="../WEB-INF/deletePostPage.jsp"/>
 </body>
 </html>
