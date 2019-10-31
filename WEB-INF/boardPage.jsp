@@ -1,3 +1,4 @@
+<%@page import="jspBulletinBoard.PostDAO"%>
 <%@page import="jspBulletinBoard.Post"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
@@ -10,62 +11,24 @@
 <%@ page import="java.sql.SQLException" %>
 <%@page import="jspBulletinBoard.Student"%>
 <%@ page import="jspBulletinBoard.ConnectDB" %>
-<%@ include file="../included/getWriter.jspf" %>
+<%@ include file="included/getWriter.jspf" %>
 <jsp:useBean id="student" class="jspBulletinBoard.Student" scope="session"/>
-<%
-
-	Connection connection = null;
-	PreparedStatement preparedStatement = null; // 10개씩 게시글을 짤라서 테이블로 보여주는데 사용된다.
-	ResultSet resultSet = null;
-	PreparedStatement preparedStatement2 = null; // 2는 다음페이지가 있는지 확인하는 용도
-	ResultSet resultSet2 = null;
-	
-	ConnectDB connectDB = new ConnectDB();
-	connection = connectDB.connect();     
-	
-	
+<%		
 	int pageNumber = 1;
 	if(request.getParameter("pageNumber") != null){
 		pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
 	}
 	boolean nextPage = false;
-	preparedStatement2 = connection.prepareStatement("SELECT POST_NO, TITLE, SID,  POSTINGDATE, CONTENT, AVAILABLE " + 
-			"FROM post WHERE AVAILABLE = 1 ORDER BY POST_NO DESC LIMIT 10 OFFSET ?");
-	preparedStatement2.setInt(1, pageNumber * 10);
-	resultSet = preparedStatement2.executeQuery();
-	if(resultSet.next()){
-		nextPage  = true;
-	}else{
-		nextPage = false;
-	}
+	
+	PostDAO postDAO =new PostDAO();
+	nextPage = postDAO.nextPage(pageNumber);
 
 	
 	request.setCharacterEncoding("utf-8");
 	String SID = (String)session.getAttribute("login");
 	
-	
-	
-	
-	                                           // date_format(POSTINGDATE,'%Y-%m-%d') as POSTINGDATE  으로 간단하게 뽑을 수도있다.
-	preparedStatement = connection.prepareStatement("SELECT POST_NO, TITLE, SID,  POSTINGDATE, CONTENT, AVAILABLE " + 
-													"FROM post WHERE AVAILABLE = 1 ORDER BY POST_NO DESC LIMIT 10 OFFSET ?");
-	preparedStatement.setInt(1, (pageNumber - 1) * 10);
-	
-	resultSet = preparedStatement.executeQuery();
-	List<Post> postList = new ArrayList<Post>();
-	
-	while(resultSet.next()){
-		//POST_NO,TITLE,SID,POSTINGDATE,CONTENT,AVAILABLE
-		Post post = new Post();
-		post.setPostNo(resultSet.getInt("POST_NO"));
-		post.setTitle(resultSet.getString("TITLE"));
-		post.setSid(resultSet.getInt("SID"));
-		post.setPostingdate(resultSet.getString("POSTINGDATE"));
-		post.setContent(resultSet.getString("CONTENT"));
-		post.setAvailable(resultSet.getInt("AVAILABLE"));
-		
-		postList.add(post);
-	}
+	ArrayList<Post> postList = postDAO.postList(pageNumber);
+
 %>
 <!DOCTYPE html>
 <html>
@@ -90,7 +53,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
-<jsp:include page="../included/top.jsp">
+<jsp:include page="included/top.jsp">
 	<jsp:param value="board" name="type"/>
 </jsp:include>
 
@@ -120,7 +83,6 @@
 					<%
 						}
 					
-						connectDB.release();
 					%>
 				
 			</tbody>

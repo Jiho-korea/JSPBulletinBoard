@@ -1,3 +1,4 @@
+<%@page import="jspBulletinBoard.StudentDAO"%>
 <%@page import="java.io.PrintWriter"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
@@ -26,12 +27,7 @@
 		script.println("</script>");
 		
 	}
-/*	List<Object> parameters = new ArrayList<Object>();
-	parameters.add(Integer.parseInt(SID));
-	parameters.add(userName);
-	parameters.add(userPassword);
-	parameters.add(Integer.parseInt(grade));
-	parameters.add(subject);  */
+
 	
 %>
 <!DOCTYPE html>
@@ -43,95 +39,30 @@
 <body>
 
 <%
-
-	try {
-		// JDBC 드라이버 로딩
-		Class.forName("com.mysql.cj.jdbc.Driver"); 
-	} catch (ClassNotFoundException e) {
-		throw new RuntimeException(e);
-	}
-
-	Connection connection = null;
-	PreparedStatement preparedStatement = null; // 회원검색 용
-	PreparedStatement preparedStatement2 = null; // 회원가입 용
-	ResultSet resultSet = null; // 회원검색
-	int updateQuery = 0;
-	Student student = null;
-
-
-	try{
-	// 데이터베이스 연결
-		connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/jspbulletinboard?useSSL=false&serverTimezone=UTC", "root", "1111");
+	StudentDAO studentDAO = new StudentDAO();
+	int checkRegistration = studentDAO.checkRegistration(sid);
+	int updateCount = 0;
 	
-	//쿼리문 처리 객체 생성
-		preparedStatement = connection.prepareStatement("SELECT * FROM student WHERE SID = ?");
-		preparedStatement.setInt(1, Integer.parseInt(sid));
-		resultSet = preparedStatement.executeQuery();
-		if(resultSet.first()){ %>
+	if(checkRegistration == 1){ %>
 			<script>
 				alert("이미 같은 학번이 존재합니다.");
 				history.go(-1)
-			</script>
-			
+			</script>	
 <%		
-		}else{ %>
+	}else{ %>
 <% 		
-			preparedStatement2 = connection.prepareStatement("INSERT INTO student VAlUES(?,?,?,?,?,0)");
-			preparedStatement2.setInt(1,Integer.parseInt(sid));
-			preparedStatement2.setString(2,name);
-			preparedStatement2.setString(3,password);
-			preparedStatement2.setInt(4,Integer.parseInt(grade));
-			preparedStatement2.setString(5,subject);
-			
-			updateQuery = preparedStatement2.executeUpdate();
-		}
-		
-	}catch(SQLException e){
-		throw e;
-	}finally{
-		if(resultSet != null){
-			try{
-				resultSet.close();
-			}catch(SQLException e){
-				
-			}
-		}
-		if(preparedStatement != null){
-			try{
-				preparedStatement.close();
-			}catch(SQLException e){
-			
-			}
-		}
-		
-		if(preparedStatement2 != null){
-			try{
-				preparedStatement2.close();
-			}catch(SQLException e){
-			
-			}
-		}
-		
-		if(connection != null){
-			try{
-				connection.close();
-			}catch(SQLException e){
-			
-			}
-		}
-	
+		updateCount = studentDAO.register(sid, name, password, grade, subject);
 	}
 %>
 
 <%  
-	if(updateQuery == 1){ %>
+	if(updateCount == 1){ %>
 		<script>
 			alert("회원가입 완료. 로그인 해주세요.");
 			
 			 window.location = '../loginFormPage.jsp';
 		</script>
 	
-<%}
-%>   
+<%}%>   
 </body>
 </html>

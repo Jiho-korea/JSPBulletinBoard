@@ -23,33 +23,33 @@
 	<div class="jumbotron">
 	     <h4 class="mb-4">회원가입</h4>
 	      <form class="form-signin"  method ="post"  action="<%= request.getContextPath() %>/action/registerAction.jsp"  onsubmit="return clickEvent()">
-	            <input type="text" class="form-control"  name="name" placeholder="이름"  required oninvalid="this.setCustomValidity('이름을 입력해 주세요.')">
+	            <input type="text" class="form-control"  name="name" placeholder="이름"  id="name"  required/>
 	       
 				<br class="mb-4">
 			
 				
-				<input type="number" class="form-control" name="sid" placeholder="학번"   required oninvalid="this.setCustomValidity('학번을 입력해 주세요.')">
+				<input type="number" class="form-control" name="sid" placeholder="학번"  id="sid"  required/>
         
         		<br class="mb-4">
 	
  	          	<div class="row">
           			<div class="col-md-6 mb-3">
        
-            			<input type="password" class="form-control"  name="password"  id="userPassword" placeholder="비밀번호"  required oninvalid="this.setCustomValidity('비밀번호를 입력해 주세요.')">
+            			<input type="password" class="form-control"  name="password"  id="userPassword" placeholder="비밀번호"  required/>
 					</div>
           			<div class="col-md-6 mb-3">
-            			<input type="password" class="form-control" id="checkPassword" placeholder="비밀번호 확인"   required oninvalid="this.setCustomValidity('비밀번호를 한번 더 입력해 주세요.')">
+            			<input type="password" class="form-control" id="checkPassword" placeholder="비밀번호 확인"   required/>
             		
           			</div>
         		</div>
  	    
   				<br class="mb-1">
-				<input type="number" class="form-control" name="grade" placeholder="학년"   required oninvalid="this.setCustomValidity('학년을 입력해 주세요.')">
+				<input type="number" class="form-control" name="grade"  id="grade" placeholder="학년"   required/>
 	     
  	          	
  	          	<br class="mb-4">
  	          	
-				<input type="text" class="form-control" name="subject" placeholder="학과"   required oninvalid="this.setCustomValidity('학과를 입력해 주세요.')">
+				<input type="text" class="form-control" name="subject"  id="subject" placeholder="학과"   required/>
  	          	
  	          	<br class="mb-4">
  	          
@@ -69,8 +69,21 @@
 		if(userPassword != checkPassword){
 			alert("비밀번호를 다시 확인해주세요.");
 			return false;
-		}else{
-			return true;
+		}else if($("#name").val() == ""){
+			alert("이름을 입력해주세요.");
+			return false;
+		}else if($("#sid").val() == ""){
+			alert("학번을 입력해주세요.");
+			return false;
+		}else if($("#userPassword").val() == ""){
+			alert("비밀번호를 입력해주세요.");
+			return false;
+		}else if($("#grade").val() == ""){
+			alert("학년을 입력해주세요.");
+			return false;
+		}else if($("#subject").val() == ""){
+			alert("학과를 입력해주세요.");
+			return false;
 		}
 	});
 </script>

@@ -3,7 +3,7 @@
     pageEncoding="UTF-8"%>
 <%@page import="jspBulletinBoard.Student"%>
 <%@page import="jspBulletinBoard.ConnectDB" %>
-<%@ include file="../included/getWriter.jspf" %>
+<%@ include file="included/getWriter.jspf" %>
 <%@page import="java.sql.DriverManager"%>
 <%@ page import="java.sql.Connection" %>
 <%@ page import="java.sql.PreparedStatement" %>

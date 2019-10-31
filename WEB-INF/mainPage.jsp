@@ -34,7 +34,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
-<jsp:include page="../included/top.jsp">
+<jsp:include page="included/top.jsp">
 	<jsp:param value="main" name="type"/>
 </jsp:include>
 </body>

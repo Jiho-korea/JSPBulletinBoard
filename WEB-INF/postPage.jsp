@@ -9,7 +9,7 @@
 <%@ page import="java.sql.SQLException" %>
 <%@page import="jspBulletinBoard.Student"%>
 <%@ page import="jspBulletinBoard.ConnectDB" %>
-<%@ include file="../included/getWriter.jspf" %>
+<%@ include file="included/getWriter.jspf" %>
 <%
 	String postNo = request.getParameter("postNo");
 
@@ -62,7 +62,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<jsp:include page="../included/top.jsp">
+<jsp:include page="included/top.jsp">
 	<jsp:param value="board" name="type"/>
 </jsp:include>
 
