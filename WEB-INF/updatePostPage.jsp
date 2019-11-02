@@ -2,7 +2,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@page import="jspBulletinBoard.Student"%>
-<%@page import="jspBulletinBoard.ConnectDB" %>
 <%@ include file="included/getWriter.jspf" %>
 <%@page import="java.sql.DriverManager"%>
 <%@ page import="java.sql.Connection" %>
@@ -10,22 +9,18 @@
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="java.sql.SQLException" %>
 <%@page import="jspBulletinBoard.Post" %>
+<%@page import="jspBulletinBoard.PostDAO"%>
 <jsp:useBean id="student" class="jspBulletinBoard.Student" scope="session"/>
 <%
 	request.setCharacterEncoding("utf-8");
 	String sid = (String)session.getAttribute("login");
 	
-	
-	ConnectDB connectDB = new ConnectDB();
-	Connection connection = null;
-	PreparedStatement preparedStatement = null; 
-	ResultSet resultSet = null;
-	
-	
 	int postNo = 0;
 	if(request.getParameter("postNo") != null){
 		postNo = Integer.parseInt(request.getParameter("postNo"));
 	}
+	
+	PostDAO postDAO = new PostDAO();
 	Post post = new Post();
 	
 	if(postNo == 0){
@@ -36,23 +31,7 @@
 		script.println("</script>");
 	}else {
 		
-		connection = connectDB.connect();     
-		
-		preparedStatement = connection.prepareStatement("SELECT POST_NO, TITLE, SID,  POSTINGDATE, CONTENT, AVAILABLE " + 
-				"FROM post WHERE AVAILABLE = 1 AND POST_NO = ?");
-		preparedStatement.setInt(1, postNo);
-
-		resultSet = preparedStatement.executeQuery();
-		
-		while(resultSet.next()){
-		//POST_NO,TITLE,SID,POSTINGDATE,CONTENT,AVAILABLE
-		post.setPostNo(resultSet.getInt("POST_NO"));
-		post.setTitle(resultSet.getString("TITLE"));
-		post.setSid(resultSet.getInt("SID"));
-		post.setPostingdate(resultSet.getString("POSTINGDATE"));
-		post.setContent(resultSet.getString("CONTENT"));
-		post.setAvailable(resultSet.getInt("AVAILABLE"));
-		}
+		post = postDAO.getPostInfo(String.valueOf(postNo));
 		
 		if(!sid.equals(post.getSid()+"")){
 			PrintWriter script = response.getWriter();
@@ -62,8 +41,6 @@
 			script.println("</script>");
 		}
 	}
-	
-	
 	
 %>
 <!DOCTYPE html>

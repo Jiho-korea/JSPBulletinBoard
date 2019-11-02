@@ -6,8 +6,6 @@
 <%
 	request.setCharacterEncoding("utf-8");
 	String SID = (String)session.getAttribute("login");
-
-	ConnectDB connectDB = new ConnectDB();
 %>
 <!DOCTYPE html>
 <html>

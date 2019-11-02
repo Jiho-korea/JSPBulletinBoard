@@ -1,3 +1,4 @@
+<%@page import="jspBulletinBoard.PostDAO"%>
 <%@page import="java.io.PrintWriter"%>
 <%@page import="jspBulletinBoard.Post"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -8,7 +9,6 @@
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="java.sql.SQLException" %>
 <%@page import="jspBulletinBoard.Student"%>
-<%@ page import="jspBulletinBoard.ConnectDB" %>
 <%@ include file="included/getWriter.jspf" %>
 <%
 	String postNo = request.getParameter("postNo");
@@ -21,39 +21,13 @@
 		script.println("</script>");
 	}
 
-	Connection connection = null;
-	PreparedStatement preparedStatement = null; 
-	ResultSet resultSet = null;
-	
-	
-	ConnectDB connectDB = new ConnectDB();
-	connection = connectDB.connect();     
-	
 	
 	request.setCharacterEncoding("utf-8");
 	String SID = (String)session.getAttribute("login");
+
+	PostDAO postDAO = new PostDAO();
+	Post post = postDAO.getPostInfo(postNo);
 	
-	
-	
-	
-	                                           // date_format(POSTINGDATE,'%Y-%m-%d') as POSTINGDATE  으로 간단하게 뽑을 수도있다.
-	preparedStatement = connection.prepareStatement("SELECT POST_NO,TITLE, SID, POSTINGDATE, CONTENT, AVAILABLE " + 
-													"FROM post WHERE AVAILABLE = 1 AND POST_NO = ?");
-	preparedStatement.setInt(1, Integer.parseInt(postNo));
-	
-	resultSet = preparedStatement.executeQuery();
-	Post post = new Post();
-	while(resultSet.next()){
-		//POST_NO,TITLE,SID,POSTINGDATE,CONTENT,AVAILABLE
-		
-		post.setPostNo(resultSet.getInt("POST_NO"));
-		post.setTitle(resultSet.getString("TITLE"));
-		post.setSid(resultSet.getInt("SID"));
-		post.setPostingdate(resultSet.getString("POSTINGDATE"));
-		post.setContent(resultSet.getString("CONTENT"));
-		post.setAvailable(resultSet.getInt("AVAILABLE"));
-		
-	}
 %>
 <!DOCTYPE html>
 <html>
