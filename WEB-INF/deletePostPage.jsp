@@ -19,6 +19,10 @@
 	if(request.getParameter("postNo") != null){
 		postNo = Integer.parseInt(request.getParameter("postNo"));
 	}
+	
+	Post postParam = new Post();
+	postParam.setPostNo(postNo);
+	
 	PostDAO postDAO = new PostDAO();
 	Post post = new Post();
 	
@@ -30,7 +34,7 @@
 		script.println("</script>");
 	}else {
 		
-		post = postDAO.getPostInfo(String.valueOf(postNo));
+		post = postDAO.getPostInfo(postParam);
 		
 		if(!sid.equals(post.getSid()+"")){
 			PrintWriter script = response.getWriter();
@@ -41,7 +45,7 @@
 		}
 	}
 	
-	int updateQuery = postDAO.deletePost(String.valueOf(postNo));
+	int updateQuery = postDAO.deletePost(postParam);
 
 	if(updateQuery ==1){
 		response.sendRedirect("../from/fromBoardPage.jsp");

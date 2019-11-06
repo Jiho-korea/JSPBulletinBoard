@@ -25,9 +25,12 @@
 		script.println("</script>");
 		
 	}
+	Student studentParam = new Student();
+	studentParam.setSid(Integer.parseInt(sid));
+	studentParam.setPassword(password);
 	
 	StudentDAO studentDAO = new StudentDAO();
-	Student loginStudent = studentDAO.login(sid, password);
+	Student loginStudent = studentDAO.login(studentParam);
 	
 	if(loginStudent != null){ // 반환된 레코드 있을시(로그인 성공시) 학생 정보를 담은 Student 객체 리턴
 		session.setAttribute("login", sid);

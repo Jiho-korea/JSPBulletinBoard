@@ -25,8 +25,11 @@
 	request.setCharacterEncoding("utf-8");
 	String SID = (String)session.getAttribute("login");
 
+	Post postParam = new Post();
+	postParam.setPostNo(Integer.parseInt(postNo));
+	
 	PostDAO postDAO = new PostDAO();
-	Post post = postDAO.getPostInfo(postNo);
+	Post post = postDAO.getPostInfo(postParam);
 	
 %>
 <!DOCTYPE html>

@@ -39,8 +39,16 @@
 <body>
 
 <%
-	StudentDAO studentDAO = new StudentDAO();
-	int checkRegistration = studentDAO.checkRegistration(sid);
+	Student studentParam = new Student();
+	studentParam.setSid(Integer.parseInt(sid));
+	studentParam.setName(name);
+	studentParam.setPassword(password);
+	studentParam.setGrade(Integer.parseInt(grade));
+	studentParam.setSubject(subject);
+	
+	StudentDAO studentDAO = new StudentDAO();	
+
+	int checkRegistration = studentDAO.checkRegistration(studentParam);
 	int updateCount = 0;
 	
 	if(checkRegistration == 1){ %>
@@ -51,7 +59,7 @@
 <%		
 	}else{ %>
 <% 		
-		updateCount = studentDAO.register(sid, name, password, grade, subject);
+		updateCount = studentDAO.register(studentParam);
 	}
 %>
 

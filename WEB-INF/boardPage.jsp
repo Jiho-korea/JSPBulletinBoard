@@ -10,7 +10,6 @@
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="java.sql.SQLException" %>
 <%@page import="jspBulletinBoard.Student"%>
-<%@ page import="jspBulletinBoard.ConnectDB" %>
 <%@ include file="included/getWriter.jspf" %>
 <jsp:useBean id="student" class="jspBulletinBoard.Student" scope="session"/>
 <%		

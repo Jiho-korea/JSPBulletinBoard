@@ -38,8 +38,14 @@
 <%
 	PostDAO postDAO = new PostDAO();
 	int postNo = postDAO.getPostNo();
+	// String postNo , String title, String sid , String content
+	Post postParam = new Post();
+	postParam.setPostNo(postNo);
+	postParam.setTitle(title);
+	postParam.setSid(Integer.parseInt(SID));
+	postParam.setContent(content);
 	
-	int updateQuery = postDAO.write(String.valueOf(postNo), title, SID, content);
+	int updateQuery = postDAO.write(postParam);
 
 	if(updateQuery ==1){
 		response.sendRedirect("../from/fromBoardPage.jsp");

@@ -24,6 +24,12 @@
 	if(request.getParameter("postNo") != null){
 		postNo = Integer.parseInt(request.getParameter("postNo"));
 	}
+	
+	Post postParam = new Post();
+	postParam.setPostNo(postNo);
+	postParam.setTitle(title);
+	postParam.setContent(content);
+	
 	if(postNo == 0){
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
@@ -37,7 +43,7 @@
 		script.println("location.href = '../from/fromBoardPage.jsp'");
 		script.println("</script>");
 	}else {
-		post = postDAO.getPostInfo(String.valueOf(postNo));
+		post = postDAO.getPostInfo(postParam);
 		
 		if(!sid.equals(post.getSid()+"")){
 			PrintWriter script = response.getWriter();
@@ -59,7 +65,7 @@
 <body>
 <%
 	
-	int updateQuery = postDAO.updatePost(title, content, String.valueOf(postNo));
+	int updateQuery = postDAO.updatePost(postParam);
 	if(updateQuery ==1){
 		response.sendRedirect("../from/fromBoardPage.jsp");
 	}else{
