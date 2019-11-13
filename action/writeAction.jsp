@@ -1,16 +1,11 @@
 <%@page import="java.io.PrintWriter"%>
 <%@page import="java.util.Date"%>
-<%@page import="java.sql.DriverManager"%>
-<%@ page import="java.sql.Connection" %>
-<%@ page import="java.sql.PreparedStatement" %>
-<%@ page import="java.sql.ResultSet" %>
-<%@ page import="java.sql.SQLException" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@page import="jspBulletinBoard.Post" %>
-<%@page import="jspBulletinBoard.PostDAO"%>
+<%@page import="jspBulletinBoard.vo.Post" %>
+<%@page import="jspBulletinBoard.dao.PostDAO"%>
 
-<jsp:useBean id="student" class="jspBulletinBoard.Student" scope="session"/>
+<jsp:useBean id="student" class="jspBulletinBoard.vo.Student" scope="session"/>
 <%
 
 	request.setCharacterEncoding("utf-8");

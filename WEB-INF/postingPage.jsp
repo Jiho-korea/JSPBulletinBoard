@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@page import="jspBulletinBoard.Student"%>
-<%@ page import="jspBulletinBoard.ConnectDB" %>
-<jsp:useBean id="student" class="jspBulletinBoard.Student" scope="session"/>
+<%@page import="jspBulletinBoard.vo.Student"%>
+<jsp:useBean id="student" class="jspBulletinBoard.vo.Student" scope="session"/>
 <%
 	request.setCharacterEncoding("utf-8");
 	String SID = (String)session.getAttribute("login");

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<jsp:useBean id="student" class="jspBulletinBoard.Student" scope="session"/>
+<jsp:useBean id="student" class="jspBulletinBoard.vo.Student" scope="session"/>
 <%
 	String type = request.getParameter("type");
 %>

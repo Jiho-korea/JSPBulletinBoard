@@ -1,17 +1,12 @@
-<%@page import="jspBulletinBoard.PostDAO"%>
-<%@page import="jspBulletinBoard.Post"%>
+<%@page import="jspBulletinBoard.dao.PostDAO"%>
+<%@page import="jspBulletinBoard.vo.Post"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@page import="java.sql.DriverManager"%>
-<%@ page import="java.sql.Connection" %>
-<%@ page import="java.sql.PreparedStatement" %>
-<%@ page import="java.sql.ResultSet" %>
-<%@ page import="java.sql.SQLException" %>
-<%@page import="jspBulletinBoard.Student"%>
+<%@page import="jspBulletinBoard.vo.Student"%>
 <%@ include file="included/getWriter.jspf" %>
-<jsp:useBean id="student" class="jspBulletinBoard.Student" scope="session"/>
+<jsp:useBean id="student" class="jspBulletinBoard.vo.Student" scope="session"/>
 <%		
 	int pageNumber = 1;
 	if(request.getParameter("pageNumber") != null){

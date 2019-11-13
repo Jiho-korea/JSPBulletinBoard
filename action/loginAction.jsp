@@ -1,16 +1,11 @@
-<%@page import="jspBulletinBoard.Student"%>
-<%@page import="jspBulletinBoard.StudentDAO"%>
+<%@page import="jspBulletinBoard.vo.Student"%>
+<%@page import="jspBulletinBoard.dao.StudentDAO"%>
 <%@page import="java.io.PrintWriter"%>
 <%@page import="java.net.URLEncoder"%>
-<%@page import="java.sql.DriverManager"%>
-<%@ page import="java.sql.Connection" %>
-<%@ page import="java.sql.PreparedStatement" %>
-<%@ page import="java.sql.ResultSet" %>
-<%@ page import="java.sql.SQLException" %>
 <%@ page import="java.lang.RuntimeException"  %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<jsp:useBean id="student" class="jspBulletinBoard.Student" scope="session"/>
+<jsp:useBean id="student" class="jspBulletinBoard.vo.Student" scope="session"/>
 <%
 	request.setCharacterEncoding("utf-8");
   // 아이디 기억 유무

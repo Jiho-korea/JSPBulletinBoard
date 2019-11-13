@@ -21,17 +21,10 @@
 			<description>서비스 레벨</description>
 			<param-name>serviceLevel</param-name>
 			<param-value>2</param-value>
-		</context-param>
-		
-		<servlet>
-			<servlet-name>mysqlDriverLoader</servlet-name>
-			<servlet-class>JDBCDriver.MySQLJDBCDriverLoader</servlet-class>
-			<load-on-startup>1</load-on-startup>
-		</servlet>
-	 	
+		</context-param> 	
 	 	<filter>
 	 		<filter-name>LoginCheckFilter</filter-name>
-	 		<filter-class>jspBulletinBoard.LoginCheckFilter</filter-class>
+	 		<filter-class>jspBulletinBoard.filter.LoginCheckFilter</filter-class>
 	 	</filter>	
 		<filter-mapping>
 			<filter-name>LoginCheckFilter</filter-name>

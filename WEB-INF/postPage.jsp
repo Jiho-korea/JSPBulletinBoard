@@ -1,14 +1,9 @@
-<%@page import="jspBulletinBoard.PostDAO"%>
+<%@page import="jspBulletinBoard.dao.PostDAO"%>
 <%@page import="java.io.PrintWriter"%>
-<%@page import="jspBulletinBoard.Post"%>
+<%@page import="jspBulletinBoard.vo.Post"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@page import="java.sql.DriverManager"%>
-<%@ page import="java.sql.Connection" %>
-<%@ page import="java.sql.PreparedStatement" %>
-<%@ page import="java.sql.ResultSet" %>
-<%@ page import="java.sql.SQLException" %>
-<%@page import="jspBulletinBoard.Student"%>
+<%@page import="jspBulletinBoard.vo.Student"%>
 <%@ include file="included/getWriter.jspf" %>
 <%
 	String postNo = request.getParameter("postNo");
@@ -36,7 +31,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>게시글 페이지</title>
 </head>
 <body>
 <jsp:include page="included/top.jsp">
