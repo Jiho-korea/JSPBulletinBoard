@@ -1,10 +1,10 @@
+<%@page import="jspBulletinBoard.dao.StudentDAO"%>
 <%@page import="jspBulletinBoard.dao.PostDAO"%>
 <%@page import="java.io.PrintWriter"%>
 <%@page import="jspBulletinBoard.vo.Post"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@page import="jspBulletinBoard.vo.Student"%>
-<%@ include file="included/getWriter.jspf" %>
 <%
 	String postNo = request.getParameter("postNo");
 
@@ -26,6 +26,7 @@
 	PostDAO postDAO = new PostDAO();
 	Post post = postDAO.getPostInfo(postParam);
 	
+	StudentDAO studentDAO = new StudentDAO();
 %>
 <!DOCTYPE html>
 <html>
@@ -54,7 +55,7 @@
 						작성자
 					</td>
 					<td colspan="2">
-						<%= getWriter(post.getSid())%>
+						<%= studentDAO.getWriter(post.getSid()).getName()%>
 					</td>
 				</tr>
 				<tr>

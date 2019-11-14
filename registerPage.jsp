@@ -5,7 +5,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width , initial-scale=1">
-	<link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet" >
+	<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" >
 	<style>
 		#main{
 			width: 40%;
@@ -22,7 +22,7 @@
 	<div class="container"   id="main">
 	<div class="jumbotron">
 	     <h4 class="mb-4">회원가입</h4>
-	      <form class="form-signin"  method ="post"  action="<%= request.getContextPath() %>/action/registerAction.jsp"  onsubmit="return clickEvent()">
+	      <form class="form-signin"  method ="post"  action="${pageContext.request.contextPath}/register"  onsubmit="return clickEvent()">
 	            <input type="text" class="form-control"  name="name" placeholder="이름"  id="name"  required/>
 	       
 				<br class="mb-4">

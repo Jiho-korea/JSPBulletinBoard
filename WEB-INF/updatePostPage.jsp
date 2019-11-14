@@ -2,7 +2,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@page import="jspBulletinBoard.vo.Student"%>
-<%@ include file="included/getWriter.jspf" %>
 <%@page import="jspBulletinBoard.vo.Post" %>
 <%@page import="jspBulletinBoard.dao.PostDAO"%>
 <jsp:useBean id="student" class="jspBulletinBoard.vo.Student" scope="session"/>

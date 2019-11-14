@@ -5,23 +5,7 @@
 	             http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	         version="3.1"
 	         
-	         >
-		<!-- application 객체가 다루는 초기화 파라미터 -->	
-		<context-param>
-			<description>시스템 이름</description>
-			<param-name>systemName</param-name>
-			<param-value>ClosedDocumentManagementSystem</param-value>
-		</context-param>
-		<context-param>
-			<description>관리 모듈</description>
-			<param-name>adminmodule</param-name>
-			<param-value>false</param-value>
-		</context-param>
-		<context-param>
-			<description>서비스 레벨</description>
-			<param-name>serviceLevel</param-name>
-			<param-value>2</param-value>
-		</context-param> 	
+	         >	
 	 	<filter>
 	 		<filter-name>LoginCheckFilter</filter-name>
 	 		<filter-class>jspBulletinBoard.filter.LoginCheckFilter</filter-class>

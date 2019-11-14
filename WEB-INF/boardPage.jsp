@@ -1,3 +1,4 @@
+<%@page import="jspBulletinBoard.dao.StudentDAO"%>
 <%@page import="jspBulletinBoard.dao.PostDAO"%>
 <%@page import="jspBulletinBoard.vo.Post"%>
 <%@page import="java.util.ArrayList"%>
@@ -5,7 +6,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@page import="jspBulletinBoard.vo.Student"%>
-<%@ include file="included/getWriter.jspf" %>
 <jsp:useBean id="student" class="jspBulletinBoard.vo.Student" scope="session"/>
 <%		
 	int pageNumber = 1;
@@ -16,7 +16,7 @@
 	
 	PostDAO postDAO =new PostDAO();
 	nextPage = postDAO.nextPage(pageNumber);
-
+	StudentDAO studentDAO = new StudentDAO();
 	
 	request.setCharacterEncoding("utf-8");
 	String SID = (String)session.getAttribute("login");
@@ -66,7 +66,7 @@
 				
 					<%
 						for(int i = 0; i<postList.size(); i++){
-							String writer = getWriter(postList.get(i).getSid());
+							String writer = studentDAO.getWriter(postList.get(i).getSid()).getName();
 					%>
 					<tr>
 					<td><%= postList.get(i).getPostNo() %></td>
