@@ -8,28 +8,16 @@
 <%@page import="jspBulletinBoard.vo.Student"%>
 <jsp:useBean id="student" class="jspBulletinBoard.vo.Student" scope="session"/>
 <%		
-	int pageNumber = 1;
-	if(request.getParameter("pageNumber") != null){
-		pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
-	}
-	boolean nextPage = false;
-	
-	PostDAO postDAO =new PostDAO();
-	nextPage = postDAO.nextPage(pageNumber);
-	StudentDAO studentDAO = new StudentDAO();
-	
-	request.setCharacterEncoding("utf-8");
-	String SID = (String)session.getAttribute("login");
-	
-	ArrayList<Post> postList = postDAO.postList(pageNumber);
-
+	ArrayList<Post> postList = (ArrayList<Post>)request.getAttribute("postList");
+	int pageNumber = (Integer)request.getAttribute("pageNumber");
+	boolean nextPage = (Boolean)request.getAttribute("nextPage");
 %>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width , initial-scale=1">
-	<link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet" >
+	<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" >
 	<style>
 		#main{
 			width: 40%;
@@ -63,38 +51,25 @@
 				</tr>
 			</thead>
 			<tbody>
-				
-					<%
-						for(int i = 0; i<postList.size(); i++){
-							String writer = studentDAO.getWriter(postList.get(i).getSid()).getName();
-					%>
+					<%for(int i = 0; i<postList.size(); i++){%>
 					<tr>
 					<td><%= postList.get(i).getPostNo() %></td>
-					<td><a href="../from/fromPostPage.jsp?postNo=<%=postList.get(i).getPostNo() %>"><%= postList.get(i).getTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></a></td>
-					<td><%= writer%></td>
+					<td><a href="../from/post?postNo=<%=postList.get(i).getPostNo() %>"><%= postList.get(i).getTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></a></td>
+					<td><%= StudentDAO.getWriter(postList.get(i).getSid()).getName()%></td>
 					<td><%= postList.get(i).getPostingdate().substring(0,11) + postList.get(i).getPostingdate().substring(11,13) +"시" + postList.get(i).getPostingdate().substring(14,16) +"분" %></td>
 					</tr>
-					<%
-						}
-					
-					%>
-				
+					<%}%>
 			</tbody>
 		</table>
 		</div>
 		<%
-			if(pageNumber != 1){
-		%>
-				<a href="../from/fromOtherPage.jsp?pageNumber=<%=pageNumber  - 1%>"  class="btn btn-secondary" style="margin-left: 20px">◀</a>
-		<%
-			}if(nextPage){
-		%>
-				<a href="../from/fromOtherPage.jsp?pageNumber=<%=pageNumber  + 1%>"  class="btn btn-secondary" style="margin-left: 20px">▶</a>
-		<%
-			}
-		%>
+			if(pageNumber != 1){%>
+				<a href="${pageContext.request.contextPath}/from/board?pageNumber=<%=pageNumber  - 1%>"  class="btn btn-secondary" style="margin-left: 20px">◀</a>
+		<%}if(nextPage){%>
+				<a href="${pageContext.request.contextPath}/from/board?pageNumber=<%=pageNumber  + 1%>"  class="btn btn-secondary" style="margin-left: 20px">▶</a>
+		<%}%>
 		<div style="float : right">
-			<a href="<%=request.getContextPath() %>/from/fromPostingPage.jsp" class="btn btn-primary pull-right"  >글쓰기</a>
+			<a href="${pageContext.request.contextPath}/from/postingpage" class="btn btn-primary pull-right"  >글쓰기</a>
 		</div>
 		
 </div>

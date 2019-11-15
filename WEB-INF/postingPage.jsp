@@ -2,16 +2,12 @@
     pageEncoding="UTF-8"%>
 <%@page import="jspBulletinBoard.vo.Student"%>
 <jsp:useBean id="student" class="jspBulletinBoard.vo.Student" scope="session"/>
-<%
-	request.setCharacterEncoding("utf-8");
-	String SID = (String)session.getAttribute("login");
-%>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width , initial-scale=1">
-	<link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet" >
+	<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" >
 	<style>
 		#main{
 			width: 40%;
@@ -31,7 +27,7 @@
 
 <div class="container" style="margin-top:60px">
 	<div class="row-col" >
-		<form method="post" action="<%= request.getContextPath() %>/action/writeAction.jsp">
+		<form method="post" action="${pageContext.request.contextPath}/from/posting">
 			<table class="table table-striped" style="text-align: center; border: 1px solid  #dddddd">
 				<thead>
 					<tr>

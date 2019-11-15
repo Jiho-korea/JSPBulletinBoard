@@ -6,46 +6,14 @@
 <%@page import="jspBulletinBoard.dao.PostDAO"%>
 <jsp:useBean id="student" class="jspBulletinBoard.vo.Student" scope="session"/>
 <%
-	request.setCharacterEncoding("utf-8");
-	String sid = (String)session.getAttribute("login");
-	
-	int postNo = 0;
-	if(request.getParameter("postNo") != null){
-		postNo = Integer.parseInt(request.getParameter("postNo"));
-	}
-	
-	Post postParam = new Post();
-	postParam.setPostNo(postNo);
-	
-	PostDAO postDAO = new PostDAO();
-	Post post = new Post();
-	
-	if(postNo == 0){
-		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		script.println("alert(\"유효하지 않은 글입니다..\");");
-		script.println("location.href = '../from/fromBoardPage.jsp'");
-		script.println("</script>");
-	}else {
-		
-		post = postDAO.getPostInfo(postParam);
-		
-		if(!sid.equals(post.getSid()+"")){
-			PrintWriter script = response.getWriter();
-			script.println("<script>");
-			script.println("alert(\"권한이 없습니다.\");");
-			script.println("location.href = '../from/fromBoardPage.jsp'");
-			script.println("</script>");
-		}
-	}
-	
+	Post post = (Post)request.getAttribute("post");
 %>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width , initial-scale=1">
-	<link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet" >
+	<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" >
 	<style>
 		#main{
 			width: 40%;
@@ -65,7 +33,7 @@
 
 <div class="container" style="margin-top:60px">
 	<div class="row-col" >
-		<form method="post" action="../action/updateAction.jsp?postNo=<%= postNo%>">
+		<form method="post" action="../from/update?postNo=<%= post.getPostNo()%>">
 			<table class="table table-striped" style="text-align: center; border: 1px solid  #dddddd">
 				<thead>
 					<tr>

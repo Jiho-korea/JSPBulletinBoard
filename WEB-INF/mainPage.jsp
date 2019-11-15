@@ -4,10 +4,7 @@
 <jsp:useBean id="student" class="jspBulletinBoard.vo.Student" scope="session"/>
 
 <%
-	request.setCharacterEncoding("utf-8");
 	String SID = (String)session.getAttribute("login");
-
-	//Student student = getPersonalInfo(Integer.parseInt(SID));
 %>
 <!DOCTYPE html>
 <html>
@@ -15,7 +12,7 @@
 	
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width , initial-scale=1">
-	<link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet" >
+	<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" >
 
 	<style>
 		#main{

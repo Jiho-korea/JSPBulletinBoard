@@ -6,27 +6,8 @@
     pageEncoding="UTF-8"%>
 <%@page import="jspBulletinBoard.vo.Student"%>
 <%
-	String postNo = request.getParameter("postNo");
-
-	if(postNo == null || postNo.equals("")){
-		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		script.println("alert(\"글번호가 잘못 되었습니다.\");");
-		script.println("location.href = '../from/fromBoardPage.jsp'");
-		script.println("</script>");
-	}
-
-	
-	request.setCharacterEncoding("utf-8");
+	Post post = (Post)request.getAttribute("post");
 	String SID = (String)session.getAttribute("login");
-
-	Post postParam = new Post();
-	postParam.setPostNo(Integer.parseInt(postNo));
-	
-	PostDAO postDAO = new PostDAO();
-	Post post = postDAO.getPostInfo(postParam);
-	
-	StudentDAO studentDAO = new StudentDAO();
 %>
 <!DOCTYPE html>
 <html>
@@ -55,7 +36,7 @@
 						작성자
 					</td>
 					<td colspan="2">
-						<%= studentDAO.getWriter(post.getSid()).getName()%>
+						<%= StudentDAO.getWriter(post.getSid()).getName()%>
 					</td>
 				</tr>
 				<tr>
@@ -84,12 +65,11 @@
 		</table>
 		</div>
 		<div style="float : left">
-			<a href="../from/fromBoardPage.jsp" class="btn btn-primary"  >목록</a>
+			<a href="../from/board" class="btn btn-primary"  >목록</a>
 		
 		<%if(SID.equals(post.getSid()+"")){ %>
-			<a href="../from/fromUpdatePostPage.jsp?postNo=<%=post.getPostNo() %>" class="btn btn-primary"  >수정</a>
-			<a href="../from/fromDeletePostPage.jsp?postNo=<%=post.getPostNo() %>" class="btn btn-primary"  onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</a>
-			
+			<a href="../from/updatepage?postNo=<%=post.getPostNo() %>" class="btn btn-primary"  >수정</a>
+			<a href="../from/delete?postNo=<%=post.getPostNo() %>" class="btn btn-primary"  onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</a>
 		<%}%>
 		</div>
 </div>
