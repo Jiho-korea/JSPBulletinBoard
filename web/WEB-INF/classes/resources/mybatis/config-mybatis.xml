@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+	<typeAliases>
+		<typeAlias type="jspBulletinBoard.vo.Post" alias="post"/>
+		<typeAlias type="jspBulletinBoard.vo.Student" alias="student"/>
+	</typeAliases>
+    <!-- 환경 스택 -->
+	<environments default="default">
+		<!-- 환경 -->
+		<environment id="default">
+			<!-- 트랜잭션 관리자 -->
+			<transactionManager type="JDBC" />
+			<!-- 데이터 소스 -->
+			<dataSource type="UNPOOLED">
+				<property name="driver" value="com.mysql.cj.jdbc.Driver" />
+				<property name="url" value="jdbc:mysql://localhost:3306/jspbulletinboard?useSSL=false&amp;serverTimezone=UTC" />
+				<property name="username" value="root" /> 
+				<property name="password" value="1111" />
+			</dataSource>
+		</environment>
+	</environments>
+
+	<mappers>
+		<!-- 마이바티스 매퍼 XML 파일 -->
+		<mapper resource="resources/mybatis/PostMapper.xml" />
+		<mapper resource="resources/mybatis/StudentMapper.xml" />
+	</mappers>
+</configuration>
