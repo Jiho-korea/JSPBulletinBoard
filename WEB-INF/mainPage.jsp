@@ -9,11 +9,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width , initial-scale=1">
-	<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" >
-
 	<style>
 		#main{
 			width: 40%;
@@ -34,5 +30,6 @@
 <jsp:include page="included/top.jsp">
 	<jsp:param value="main" name="type"/>
 </jsp:include>
+<br>
 </body>
 </html>
