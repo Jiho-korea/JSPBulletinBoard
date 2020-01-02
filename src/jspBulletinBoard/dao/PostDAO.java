@@ -64,8 +64,24 @@ public class PostDAO {
 		}
     }
     
-
+//댓글까지 포함된 게시글 정보 받아온다.
     public Post getPostInfo(Post pPost) {
+    	SqlSession sqlSession = sqlSessionFactory.openSession();
+		Post post = null;
+		try {
+			post = sqlSession.selectOne("org.mybatis.persistence.PostMapper.infoPost",pPost);
+			return post;
+		}catch (Exception e) {
+			e.printStackTrace();
+			sqlSession.rollback();
+			return post;
+		}finally {
+			sqlSession.close();
+		}
+    }
+    
+
+    public Post selectPost(Post pPost) {
     	SqlSession sqlSession = sqlSessionFactory.openSession();
 		Post post = null;
 		try {
@@ -80,7 +96,6 @@ public class PostDAO {
 		}
     }
     
-
     public int deletePost(Post pPost){
     	SqlSession sqlSession = sqlSessionFactory.openSession();
 		int success = 0;

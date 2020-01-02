@@ -1,7 +1,7 @@
 package jspBulletinBoard.vo;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.List;
 
 public class Post implements Serializable {
 
@@ -12,8 +12,25 @@ public class Post implements Serializable {
 	private int sid;
 	private String postingdate;
 	private String content;
+	private List<Comment> comments;	
 	private int available;
-
+	public Post(int postNo, String title, int sid, String postingdate, String content, List<Comment> comments,
+			int available) {
+		super();
+		this.postNo = postNo;
+		this.title = title;
+		this.sid = sid;
+		this.postingdate = postingdate;
+		this.content = content;
+		this.comments = comments;
+		this.available = available;
+	}
+	public Post() {
+		super();
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	public int getPostNo() {
 		return postNo;
 	}
@@ -28,6 +45,9 @@ public class Post implements Serializable {
 	}
 	public String getContent() {
 		return content;
+	}
+	public List<Comment> getComments() {
+		return comments;
 	}
 	public int getAvailable() {
 		return available;
@@ -47,9 +67,11 @@ public class Post implements Serializable {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
 	public void setAvailable(int available) {
 		this.available = available;
 	}
-	
-	
+
 }

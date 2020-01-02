@@ -1,3 +1,5 @@
+<%@page import="jspBulletinBoard.vo.Comment"%>
+<%@page import="java.util.List"%>
 <%@page import="jspBulletinBoard.dao.StudentDAO"%>
 <%@page import="jspBulletinBoard.dao.PostDAO"%>
 <%@page import="java.io.PrintWriter"%>
@@ -7,7 +9,8 @@
 <%@page import="jspBulletinBoard.vo.Student"%>
 <%
 	Post post = (Post)request.getAttribute("post");
-	String SID = (String)session.getAttribute("login");
+	Student student = (Student)session.getAttribute("student");
+	List<Comment> comments = post.getComments();
 %>
 <!DOCTYPE html>
 <html>
@@ -61,12 +64,49 @@
 	<div align="center">
 		<a href="../from/board"  ><input type="button" value="목록"/></a>
 		
-		<%if(SID.equals(post.getSid()+"")){ %>
+		<%if(student.getSid() == post.getSid()){ %>
 			<a href="../from/updatepage?postNo=<%=post.getPostNo() %>"  ><input type="button" value="수정"/></a>
 			<a href="../from/delete?postNo=<%=post.getPostNo() %>"  onclick="return confirm('정말로 삭제하시겠습니까?')"><input type="button" value="삭제"/></a>
 		<%}%>
 		
 	</div>
-	
+<br><br>
+<form action="${pageContext.request.contextPath}/from/comment?postNo=<%=post.getPostNo() %>" method="post">
+	<table border="1" align="center" width="50%">
+		<tr>
+			<td width="90%">
+				<input type="text"  name="commentContent"  style="width:100%;"/>
+			</td>
+			<td width="10%">
+				<input type="submit" value="댓글작성"/>
+			</td>
+		</tr>
+	</table>
+</form>
+<%if(!comments.isEmpty() && comments.get(0) != null){ %>
+	<table border="1" align="center" width="50%">
+	<%for(int i = 0; i < comments.size(); i++){ 
+		Comment comment = comments.get(i);
+	%>
+		<tr>
+			<td width="5%">
+				<%= comment.getCommentNo()%>
+			</td>
+			<td width="15%">
+				<%= StudentDAO.getWriter(comment.getSid()).getName()%>
+			</td>
+			<td width="80%">
+				<%= comment.getCommentContent()%>
+				<%if(student.getSid() == comment.getSid()){ %>
+					<input type="button" value="수정" />
+					<input type="button" value="삭제" />
+				<%} %>
+			</td>
+		</tr>
+		<%} %>
+	</table>
+<%}%>
+
+
 </body>
 </html>

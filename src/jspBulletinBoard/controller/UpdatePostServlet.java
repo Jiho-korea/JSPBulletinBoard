@@ -49,7 +49,7 @@ public class UpdatePostServlet extends HttpServlet {
 			script.println("location.href = '../from/board'");
 			script.println("</script>");
 		}else {
-			post = postDAO.getPostInfo(postParam);
+			post = postDAO.selectPost(postParam);
 			
 			if(post !=null && !sid.equals(post.getSid()+"")){
 				PrintWriter script = response.getWriter();

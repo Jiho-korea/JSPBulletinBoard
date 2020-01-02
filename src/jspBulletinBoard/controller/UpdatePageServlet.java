@@ -41,7 +41,7 @@ public class UpdatePageServlet extends HttpServlet {
 			script.println("</script>");
 		}else {
 			
-			post = postDAO.getPostInfo(postParam);
+			post = postDAO.selectPost(postParam);
 			if(post != null) {
 				if(!sid.equals(post.getSid()+"")){
 					PrintWriter script = response.getWriter();

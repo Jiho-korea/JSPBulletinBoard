@@ -40,7 +40,7 @@ public class DeletePostServlet extends HttpServlet {
 			script.println("</script>");
 		}else {
 			
-			post = postDAO.getPostInfo(postParam);
+			post = postDAO.selectPost(postParam);
 			
 			if(post != null && !sid.equals(post.getSid()+"")){
 				PrintWriter script = response.getWriter();
