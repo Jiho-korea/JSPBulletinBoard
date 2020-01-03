@@ -30,7 +30,7 @@
 <jsp:include page="included/top.jsp">
 	<jsp:param value="board" name="type"/>
 </jsp:include>
- 	<br>
+ 	<br><br>
 	<table style="text-align: center; border: 1px solid  #dddddd" align="center">
 		<thead>
 			<tr>

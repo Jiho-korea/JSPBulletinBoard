@@ -11,6 +11,8 @@
 	Post post = (Post)request.getAttribute("post");
 	Student student = (Student)session.getAttribute("student");
 	List<Comment> comments = post.getComments();
+	
+	Comment updateComment = (Comment)request.getAttribute("comment");
 %>
 <!DOCTYPE html>
 <html>
@@ -71,7 +73,7 @@
 		
 	</div>
 <br><br>
-<form action="${pageContext.request.contextPath}/from/comment?postNo=<%=post.getPostNo() %>" method="post">
+<form action="${pageContext.request.contextPath}/from/comment?postNo=<%=post.getPostNo() %>"  method="post">
 	<table border="1" align="center" width="50%">
 		<tr>
 			<td width="90%">
@@ -83,7 +85,7 @@
 		</tr>
 	</table>
 </form>
-<%if(!comments.isEmpty() && comments.get(0) != null){ %>
+<%if(!comments.isEmpty()){ %>
 	<table border="1" align="center" width="50%">
 	<%for(int i = 0; i < comments.size(); i++){ 
 		Comment comment = comments.get(i);
@@ -96,10 +98,18 @@
 				<%= StudentDAO.getWriter(comment.getSid()).getName()%>
 			</td>
 			<td width="80%">
-				<%= comment.getCommentContent()%>
-				<%if(student.getSid() == comment.getSid()){ %>
-					<input type="button" value="수정" />
-					<input type="button" value="삭제" />
+				<%if(updateComment != null && updateComment.getCommentNo() == comment.getCommentNo()){ %>
+					<form action="${pageContext.request.contextPath}/from/updatecomment?postNo=<%=post.getPostNo() %>&commentNo=<%=comment.getCommentNo()%>"  method="post">
+						<textarea rows="10" cols="80" name="commentContent"><%= comment.getCommentContent()%></textarea>
+						<input type="submit" value="수정"/>
+						<a href="${pageContext.request.contextPath}/from/post?postNo=<%=post.getPostNo() %>"><input type="button" value="취소"/></a>
+					</form>
+				<%}else{ %>
+					<%= comment.getCommentContent()%>
+					<%if(student.getSid() == comment.getSid()){ %>
+						<a href="${pageContext.request.contextPath}/from/post?postNo=<%=post.getPostNo() %>&commentNo=<%=comment.getCommentNo()%>"><input type="button" value="수정" /></a>
+						<a href="${pageContext.request.contextPath}/from/deletecomment?commentNo=<%=comment.getCommentNo()%>&postNo=<%=post.getPostNo() %>"><input type="button" value="삭제" /></a>
+					<%} %>
 				<%} %>
 			</td>
 		</tr>

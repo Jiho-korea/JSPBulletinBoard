@@ -13,9 +13,6 @@ import javax.servlet.http.HttpSession;
 import jspBulletinBoard.dao.PostDAO;
 import jspBulletinBoard.vo.Post;
 
-/**
- * Servlet implementation class PostingServlet
- */
 @WebServlet(name = "Posting", urlPatterns = { "/from/posting" })
 public class PostingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

@@ -1,5 +1,4 @@
 package jspBulletinBoard.dao;
-
 import java.io.IOException;
 import java.io.Reader;
 import org.apache.ibatis.io.Resources;
@@ -8,6 +7,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import jspBulletinBoard.vo.Student;
+
+// DB STUDENT 테이블에 접근하는 DAO
 public class StudentDAO {
 	private static SqlSessionFactory sqlSessionFactory;
 	

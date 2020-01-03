@@ -30,6 +30,9 @@
 <jsp:include page="included/top.jsp">
 	<jsp:param value="main" name="type"/>
 </jsp:include>
-<br>
+<br><br><br><br><br>
+<div align="center">
+	<h1><b>반갑습니다. 좋은 하루 보내세요^^</b></h1>
+</div>
 </body>
 </html>

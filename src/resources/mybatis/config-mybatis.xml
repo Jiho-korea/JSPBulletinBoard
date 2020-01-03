@@ -32,5 +32,6 @@
 		<!-- 마이바티스 매퍼 XML 파일 -->
 		<mapper resource="resources/mybatis/PostMapper.xml" />
 		<mapper resource="resources/mybatis/StudentMapper.xml" />
+		<mapper resource="resources/mybatis/CommentMapper.xml" />
 	</mappers>
 </configuration>
