@@ -77,7 +77,7 @@
 	<table border="1" align="center" width="50%">
 		<tr>
 			<td width="90%">
-				<input type="text"  name="commentContent"  style="width:100%;"/>
+				<textarea rows="5" cols="90" name="commentContent"></textarea>
 			</td>
 			<td width="10%">
 				<input type="submit" value="댓글작성"/>
@@ -100,7 +100,7 @@
 			<td width="80%">
 				<%if(updateComment != null && updateComment.getCommentNo() == comment.getCommentNo()){ %>
 					<form action="${pageContext.request.contextPath}/from/updatecomment?postNo=<%=post.getPostNo() %>&commentNo=<%=comment.getCommentNo()%>"  method="post">
-						<textarea rows="10" cols="80" name="commentContent"><%= comment.getCommentContent()%></textarea>
+						<textarea rows="5" cols="80" name="commentContent"><%= comment.getCommentContent()%></textarea>
 						<input type="submit" value="수정"/>
 						<a href="${pageContext.request.contextPath}/from/post?postNo=<%=post.getPostNo() %>"><input type="button" value="취소"/></a>
 					</form>

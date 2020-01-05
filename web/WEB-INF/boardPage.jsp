@@ -62,6 +62,11 @@
 	<%}%>
 		<a href="${pageContext.request.contextPath}/from/postingpage" style="margin-left: 30%" ><input type="button" value="글쓰기"/></a>
 	</div>
-
+	<div align="center">
+		<form action="${pageContext.request.contextPath}/from/board">
+			<input type="text" name="title" placeholder="제목">
+			<input type="submit" value="검색"/>
+		</form>
+	</div>
 </body>
 </html>
