@@ -11,8 +11,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width , initial-scale=1">
-<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" >
-<link href="signin.css" rel="stylesheet">
+
 <title>JSP 게시판</title>
 </head>
 <body>

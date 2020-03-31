@@ -15,12 +15,50 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+	<link href="${pageContext.request.contextPath}/css/style.css?after" rel="stylesheet"  type="text/css"/>
 	<style>
-		a,a:hover{
-			color : #000000;
-			text-decoration : none;'
-		}
-	</style>
+	table#basic { 
+  margin: 0 auto;
+  border-collapse: collapse;
+  font-family: Agenda-Light, sans-serif;
+  font-weight: 100; 
+  background: #333; color: #fff;
+  text-rendering: optimizeLegibility;
+  border-radius: 5px; 
+  width:50%;
+}
+
+table#basic thead th { font-weight: 600; }
+table#basic thead th, table#miyazaki tbody td { 
+  padding: .8rem; font-size: 1.1rem;
+}
+table#basic tbody td { 
+  padding: .8rem; font-size: 1.1rem;
+  color: #444; background: #eee; 
+}
+table#basic tbody tr:not(:last-child) { 
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;  
+}
+
+@media screen and (max-width: 600px) {
+  table#basic caption { background-image: none; }
+  table#basic thead { display: none; }
+  table#basic tbody td { 
+    display: block; padding: .6rem; 
+  }
+  table#basic tbody tr td:first-child { 
+    background: #666; color: #fff; 
+  }
+	table#basic tbody td:before { 
+    content: attr(data-th); 
+    font-weight: bold;
+    display: inline-block;
+    width: 6rem;  
+  }
+}
+</style>
+		
 	
 	<title>게시판메인페이지</title>
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
@@ -31,15 +69,14 @@
 	<jsp:param value="board" name="type"/>
 </jsp:include>
  	<br><br>
-	<table style="text-align: center; border: 1px solid  #dddddd" align="center">
+	<table id="basic" >
 		<thead>
 			<tr>
-				<th style="background-color: #eeeeee; text-align: center; width:15%">글번호</th>
-				<th style="background-color: #eeeeee; text-align: center; width:55%">제목</th>
-				<th style="background-color: #eeeeee; text-align: center; width:10%">작성자</th>
-				<th style="background-color: #eeeeee; text-align: center; width:20%">작성일</th>
+				<th>글번호</th>
+				<th>제목</th>
+				<th>작성자</th>
+				<th>작성일</th>
 			</tr>
-		</thead>
 		<tbody> <!-- 게시글 목록에 따라 반복하여 게시글정보(글번호,제목,작성자,작성일)를 테이블에 뿌려줌-->
 				<%for(int i = 0; i<postList.size(); i++){
 					Post post = (Post)postList.get(i);
@@ -69,4 +106,28 @@
 		</form>
 	</div>
 </body>
+<script>
+var headertext = [],
+headers = document.querySelectorAll("#basic th"),
+tablerows = document.querySelectorAll("#basic th"),
+tablebody = document.querySelector("#basic tbody");
+
+for(var i = 0; i < headers.length; i++) {
+  var current = headers[i];
+  headertext.push(current.textContent.replace(/\r?\n|\r/,""));
+} 
+for (var i = 0, row; row = tablebody.rows[i]; i++) {
+  for (var j = 0, col; col = row.cells[j]; j++) {
+    col.setAttribute("data-th", headertext[j]);
+  } 
+}
+
+</script>
+<!-- 
+Copyright (c) 2020 by Dudley Storey (https://codepen.io/dudleystorey/pen/Geprd)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ -->
 </html>
