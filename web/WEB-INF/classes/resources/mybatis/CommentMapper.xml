@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.mybatis.persistence.CommentMapper">
+	<select id="selectComment" parameterType="comment" resultType="comment">
+		SELECT * FROM comment WHERE COMMENT_NO = #{commentNo}
+	</select>
+
+    <delete id="deleteComment" parameterType="comment" >
+    	DELETE FROM comment WHERE COMMENT_NO = #{commentNo}
+    </delete>
+    
+    <update id="updateComment" parameterType="comment" >
+    	UPDATE comment SET COMMENT_CONTENT = #{commentContent} WHERE COMMENT_NO = #{commentNo}
+    </update>
+    
+    <insert id="insertComment" parameterType="comment" useGeneratedKeys="true"  keyProperty="commentNo">
+    	INSERT INTO comment(COMMENT_NO, COMMENT_CONTENT, SID, POST_NO)  VALUES(#{commentNo}, #{commentContent}, #{sid}, #{postNo})
+    </insert>
+</mapper>
