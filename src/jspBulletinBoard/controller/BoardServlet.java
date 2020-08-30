@@ -30,7 +30,7 @@ public class BoardServlet extends HttpServlet {
 		nextPage = postDAO.nextPage(pageNumber);
 		
 		List<Object> postList = postDAO.postList(pageNumber);
-		if(postList == null || postList.isEmpty()) {
+		if(pageNumber != 1 && (postList == null || postList.isEmpty())) {
 			PrintWriter script = response.getWriter();
 			script.println("<script>");  
 			script.println("alert(\"존재하지 않는 페이지입니다.\");");

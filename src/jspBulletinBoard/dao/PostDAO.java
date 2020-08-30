@@ -35,7 +35,7 @@ public class PostDAO {
 		List<Object> postList = null;
 		try {
 			postList = sqlSession.selectList("org.mybatis.persistence.PostMapper.listPost",pageNumber*10);
-			if(postList != null) {
+			if(!postList.isEmpty()) {
 				return true;
 			}else {
 				return false;
