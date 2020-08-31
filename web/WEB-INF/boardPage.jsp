@@ -3,73 +3,40 @@
 <%@page import="jspBulletinBoard.vo.Post"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@page import="jspBulletinBoard.vo.Student"%>
-<jsp:useBean id="student" class="jspBulletinBoard.vo.Student" scope="session"/>
-<%		
-	List<Object> postList = (List<Object>)request.getAttribute("postList"); // 서블릿에서 request영역에 저장해둔 게시글리스트,페이지번호,다음페이지번호를 얻어옴
-	int pageNumber = (Integer)request.getAttribute("pageNumber");
-	boolean nextPage = (Boolean)request.getAttribute("nextPage");
+<jsp:useBean id="student" class="jspBulletinBoard.vo.Student"
+	scope="session" />
+<%
+	List<Object> postList = (List<Object>) request.getAttribute("postList"); // 서블릿에서 request영역에 저장해둔 게시글리스트,페이지번호,다음페이지번호를 얻어옴
+	int pageNumber = (Integer) request.getAttribute("pageNumber");
+	boolean nextPage = (Boolean) request.getAttribute("nextPage");
 %>
 <!DOCTYPE html>
 <html>
+
 <head>
-	<meta charset="UTF-8">
-	<link href="${pageContext.request.contextPath}/css/style.css?after" rel="stylesheet"  type="text/css"/>
-	<style>
-	table#basic { 
-  margin: 0 auto;
-  border-collapse: collapse;
-  font-family: Agenda-Light, sans-serif;
-  font-weight: 100; 
-  background: #333; color: #fff;
-  text-rendering: optimizeLegibility;
-  border-radius: 5px; 
-  width:50%;
-}
+<meta charset="UTF-8">
+<style>
 
-table#basic thead th { font-weight: 600; }
-table#basic thead th, table#miyazaki tbody td { 
-  padding: .8rem; font-size: 1.1rem;
-}
-table#basic tbody td { 
-  padding: .8rem; font-size: 1.1rem;
-  color: #444; background: #eee; 
-}
-table#basic tbody tr:not(:last-child) { 
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;  
-}
-
-@media screen and (max-width: 600px) {
-  table#basic caption { background-image: none; }
-  table#basic thead { display: none; }
-  table#basic tbody td { 
-    display: block; padding: .6rem; 
-  }
-  table#basic tbody tr td:first-child { 
-    background: #666; color: #fff; 
-  }
-	table#basic tbody td:before { 
-    content: attr(data-th); 
-    font-weight: bold;
-    display: inline-block;
-    width: 6rem;  
-  }
-}
 </style>
-		
-	
-	<title>게시판메인페이지</title>
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<title>게시판메인페이지</title>
+
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css"/>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 </head>
+
 <body>
-<jsp:include page="included/top.jsp">
-	<jsp:param value="board" name="type"/>
-</jsp:include>
- 	<br><br>
-	<table id="basic" >
+	<jsp:include page="included/top.jsp">
+		<jsp:param value="board" name="type" />
+	</jsp:include>
+	<br>
+	<br>
+	<table id="basic">
 		<thead>
 			<tr>
 				<th>글번호</th>
@@ -77,51 +44,67 @@ table#basic tbody tr:not(:last-child) {
 				<th>작성자</th>
 				<th>작성일</th>
 			</tr>
-		<tbody> <!-- 게시글 목록에 따라 반복하여 게시글정보(글번호,제목,작성자,작성일)를 테이블에 뿌려줌-->
-				<%for(int i = 0; i<postList.size(); i++){
-					Post post = (Post)postList.get(i);
-				%>
-				<tr>
-				<td><%= post.getPostNo() %></td>
-				<td><a href="../from/post?postNo=<%=post.getPostNo() %>"><%= post.getTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></a></td>
-				<td><%= StudentDAO.getWriter(post.getSid()).getName()%></td>
-				<td><%= post.getPostingdate().substring(0,11) + post.getPostingdate().substring(11,13) +"시" + post.getPostingdate().substring(14,16) +"분" %></td>
-				</tr>
-				<%}%>
+		<tbody>
+			<!-- 게시글 목록에 따라 반복하여 게시글정보(글번호,제목,작성자,작성일)를 테이블에 뿌려줌-->
+			<%
+				for (int i = 0; i < postList.size(); i++) {
+					Post post = (Post) postList.get(i);
+			%>
+			<tr>
+				<td><%=post.getPostNo()%></td>
+				<td><a href="../from/post?postNo=<%=post.getPostNo()%>"><%=post.getTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
+						.replaceAll("\n", "<br>")%></a></td>
+				<td><%=StudentDAO.getWriter(post.getSid()).getName()%></td>
+				<td><%=post.getPostingdate().substring(0, 11) + post.getPostingdate().substring(11, 13) + "시"
+						+ post.getPostingdate().substring(14, 16) + "분"%></td>
+			</tr>
+			<%
+				}
+			%>
 		</tbody>
 	</table>
 	<div align="center">
-	<%  // 이전버튼, 다음버튼이 있는지 없는지 검사 후(Servlet에서 던져준) BoardServlet를 다시호출한다 이떄 pageNumber 파라미터를 1감소,증가 시킨값을 넘겨주어 Servlet에서 다른 게시글 리스트를 만들도록한다.
-		if(pageNumber != 1){%>
-			<a href="${pageContext.request.contextPath}/from/board?pageNumber=<%=pageNumber  - 1%>"  style="margin-left: 20px">◀</a>
-	<%}if(nextPage){%>
-			<a href="${pageContext.request.contextPath}/from/board?pageNumber=<%=pageNumber  + 1%>" style="margin-left: 20px">▶</a>
-	<%}%>
-		<a href="${pageContext.request.contextPath}/from/postingpage" style="margin-left: 30%" ><input type="button" value="글쓰기"/></a>
+		<%
+			// 이전버튼, 다음버튼이 있는지 없는지 검사 후(Servlet에서 던져준) BoardServlet를 다시호출한다 이떄 pageNumber 파라미터를 1감소,증가 시킨값을 넘겨주어 Servlet에서 다른 게시글 리스트를 만들도록한다.
+			if (pageNumber != 1) {
+		%>
+		<a
+			href="${pageContext.request.contextPath}/from/board?pageNumber=<%=pageNumber  - 1%>"
+			style="margin-left: 20px">◀</a>
+		<%
+			}
+			if (nextPage) {
+		%>
+		<a
+			href="${pageContext.request.contextPath}/from/board?pageNumber=<%=pageNumber  + 1%>"
+			style="margin-left: 20px">▶</a>
+		<%
+			}
+		%>
+		<a href="${pageContext.request.contextPath}/from/postingpage"
+			style="margin-left: 30%"><input type="button" value="글쓰기" /></a>
 	</div>
 	<div align="center">
 		<form action="${pageContext.request.contextPath}/from/board">
-			<input type="text" name="title" placeholder="제목">
-			<input type="submit" value="검색"/>
+			<input type="text" name="title" placeholder="제목"> <input
+				type="submit" value="검색" />
 		</form>
 	</div>
 </body>
 <script>
-var headertext = [],
-headers = document.querySelectorAll("#basic th"),
-tablerows = document.querySelectorAll("#basic th"),
-tablebody = document.querySelector("#basic tbody");
+	var headertext = [], headers = document.querySelectorAll("#basic th"), tablerows = document
+			.querySelectorAll("#basic th"), tablebody = document
+			.querySelector("#basic tbody");
 
-for(var i = 0; i < headers.length; i++) {
-  var current = headers[i];
-  headertext.push(current.textContent.replace(/\r?\n|\r/,""));
-} 
-for (var i = 0, row; row = tablebody.rows[i]; i++) {
-  for (var j = 0, col; col = row.cells[j]; j++) {
-    col.setAttribute("data-th", headertext[j]);
-  } 
-}
-
+	for (var i = 0; i < headers.length; i++) {
+		var current = headers[i];
+		headertext.push(current.textContent.replace(/\r?\n|\r/, ""));
+	}
+	for (var i = 0, row; row = tablebody.rows[i]; i++) {
+		for (var j = 0, col; col = row.cells[j]; j++) {
+			col.setAttribute("data-th", headertext[j]);
+		}
+	}
 </script>
 <!-- 
 Copyright (c) 2020 by Dudley Storey (https://codepen.io/dudleystorey/pen/Geprd)
