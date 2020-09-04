@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<script>
+	<script defer>
 		location.href = "from/main"
 	</script>
 </body>

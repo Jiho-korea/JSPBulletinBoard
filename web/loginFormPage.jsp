@@ -20,8 +20,8 @@
 	
 	}
 </style>
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script src="js/bootstrap.js"></script>
+<script defer src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script defer src="js/bootstrap.js"></script>
 <title>JSP 게시판</title>
 </head>
 <body class="text-center">
