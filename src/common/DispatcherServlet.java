@@ -67,7 +67,7 @@ public class DispatcherServlet extends HttpServlet {
 		if (command.indexOf(request.getContextPath()) == 0) {
 			command = command.substring(request.getContextPath().length()); // 진정한 서블릿 요청경로 매핑을 찾아낸다.
 		}
-		System.out.println(command);
+		// System.out.println(command);
 
 		ComHandlerInterface handler = commandHandlerMap.get(command);
 		if (handler == null) {
