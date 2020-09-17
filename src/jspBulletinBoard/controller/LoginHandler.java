@@ -9,6 +9,8 @@ import javax.servlet.http.HttpSession;
 
 import common.ComHandlerInterface;
 import jspBulletinBoard.dao.StudentDAO;
+import jspBulletinBoard.exception.StudentNotFoundException;
+import jspBulletinBoard.service.LoginService;
 import jspBulletinBoard.vo.Student;
 
 public class LoginHandler implements ComHandlerInterface {
@@ -29,33 +31,39 @@ public class LoginHandler implements ComHandlerInterface {
 			script.println("history.go(-1)");
 			script.println("</script>");
 		}
-		Student studentParam = new Student();
-		studentParam.setSid(Integer.parseInt(sid));
-		studentParam.setPassword(password);
+		Student student = new Student();
+		student.setSid(Integer.parseInt(sid));
+		student.setPassword(password);
 
-		StudentDAO studentDAO = new StudentDAO();
-		Student loginStudent = studentDAO.login(studentParam);
-
-		if (loginStudent != null) { // 반환된 레코드 있을시(로그인 성공시) 학생 정보를 담은 Student 객체 리턴
-			session.setAttribute("login", sid);
+		LoginService loginService = new LoginService(new StudentDAO());
+		try {
+			student = loginService.login(student);
+			session.setAttribute("login", student.getSid());
 			if (bool != null && (bool.equals("memory"))) {
-				session.setAttribute("login1", sid);
+				session.setAttribute("login1", student.getSid());
 			} else {
 				session.removeAttribute("login1");
 			}
-
-			session.setAttribute("student", loginStudent);
-
+			session.setAttribute("student", student);
 			return "/WEB-INF/mainPage.jsp";
 
-		} else {
+		} catch (StudentNotFoundException e) {
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("alert(\"로그인 실패! ID, password 를 확인 해주세요.\");");
 			script.println("history.go(-1)");
 			script.println("</script>");
+			script.flush();
+			return null;
+		} catch (Exception e) {
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert(\"로그인 실패.\");");
+			script.println("history.go(-1)");
+			script.println("</script>");
 			return null;
 		}
+
 	}
 
 }

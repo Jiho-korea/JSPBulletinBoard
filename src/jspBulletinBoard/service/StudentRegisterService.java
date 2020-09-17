@@ -12,13 +12,13 @@ public class StudentRegisterService {
 	}
 
 	public Boolean regist(Student student) {
-		int checkRegistration = studentDAO.checkRegistration(student);
+		int checkRegistration = studentDAO.selectBySid(student);
 		if (checkRegistration == 1) {
 			throw new DuplicateStudentException("dup email " + student.getSid());
 		}
 
 		int updateCount = 0;
-		updateCount = studentDAO.register(student);
+		updateCount = studentDAO.insertStudent(student);
 		if (updateCount == 1) {
 			return true;
 		} else {

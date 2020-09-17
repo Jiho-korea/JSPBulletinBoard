@@ -5,7 +5,7 @@
 	scope="session" />
 
 <%
-	String SID = (String) session.getAttribute("login");
+	int SID = (Integer)session.getAttribute("login");
 %>
 <!DOCTYPE html>
 <html>

@@ -1,6 +1,8 @@
 package jspBulletinBoard.dao;
+
 import java.io.IOException;
 import java.io.Reader;
+
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -11,7 +13,7 @@ import jspBulletinBoard.vo.Student;
 // DB STUDENT 테이블에 접근하는 DAO
 public class StudentDAO {
 	private static SqlSessionFactory sqlSessionFactory;
-	
+
 	static {
 		try {
 			// 마이바티스 환경 설정 XML 파일 경로
@@ -22,69 +24,69 @@ public class StudentDAO {
 			e.printStackTrace();
 		}
 	}
-	
-	public Student login(Student pStudent) {
+
+	public Student selectBySidPassword(Student pStudent) {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		Student student = null;
 		try {
-			student = sqlSession.selectOne("org.mybatis.persistence.StudentMapper.login",pStudent);
+			student = sqlSession.selectOne("org.mybatis.persistence.StudentMapper.selectBySidPassword", pStudent);
 			return student;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			sqlSession.rollback();
 			return student;
-		}finally {
+		} finally {
 			sqlSession.close();
 		}
 	}
-	
-	public int checkRegistration(Student pStudent) {
+
+	public int selectBySid(Student pStudent) {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		Student student = null;
 		try {
-			student = sqlSession.selectOne("org.mybatis.persistence.StudentMapper.selectStudent",pStudent);
-			if(student != null) {
+			student = sqlSession.selectOne("org.mybatis.persistence.StudentMapper.selectBySid", pStudent);
+			if (student != null) {
 				return 1;
-			}else {
+			} else {
 				return 0;
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			sqlSession.rollback();
 			return 1;
-		}finally {
+		} finally {
 			sqlSession.close();
 		}
 	}
-	 
-	public int register(Student pStudent) {
+
+	public int insertStudent(Student pStudent) {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		int success = 0;
 		try {
-			success = sqlSession.insert("org.mybatis.persistence.StudentMapper.register",pStudent);
+			success = sqlSession.insert("org.mybatis.persistence.StudentMapper.insertStudent", pStudent);
 			sqlSession.commit();
 			return success;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			sqlSession.rollback();
 			return success;
-		}finally {
+		} finally {
 			sqlSession.close();
 		}
 	}
-	
+
 	public static Student getWriter(int sid) {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		Student student = new Student();
 		student.setSid(sid);
 		try {
-			student = sqlSession.selectOne("org.mybatis.persistence.StudentMapper.selectStudent",student);
+			student = sqlSession.selectOne("org.mybatis.persistence.StudentMapper.selectStudent", student);
 			return student;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			sqlSession.rollback();
 			return student;
-		}finally {
+		} finally {
 			sqlSession.close();
 		}
 	}

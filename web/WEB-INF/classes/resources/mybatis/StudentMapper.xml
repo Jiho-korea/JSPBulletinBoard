@@ -5,15 +5,15 @@
 
 <mapper namespace="org.mybatis.persistence.StudentMapper">
 
-	<select id="selectStudent" parameterType="student" resultType="student">
+	<select id="selectBySid" parameterType="student" resultType="student">
 		SELECT * FROM student WHERE SID = #{sid}
 	</select>
 	
-    <select id="login" parameterType="student" resultType="student">
+    <select id="selectBySidPassword" parameterType="student" resultType="student">
     	SELECT * FROM student WHERE SID = #{sid} AND PASSWORD = #{password}
     </select>
     
-    <insert id="register" parameterType="student" >
+    <insert id="insertStudent" parameterType="student" >
     	INSERT INTO student(SID,NAME,PASSWORD,GRADE,SUBJECT,MANAGER) VAlUES(#{sid}, #{name}, #{password}, #{grade}, #{subject}, 0)
     </insert>
     

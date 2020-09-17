@@ -16,7 +16,7 @@ public class MainPageHandler implements ComHandlerInterface {
 		response.setCharacterEncoding("UTF-8");
 
 		HttpSession session = request.getSession();
-		String sid = (String) session.getAttribute("login");
+		Integer sid = (Integer) session.getAttribute("login");
 		boolean loginCheck = (sid == null) ? false : true;
 
 		if (loginCheck) {
