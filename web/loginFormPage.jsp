@@ -29,7 +29,7 @@
 	<div class="container" id="main">
 		<div class="jumbotron">
 			<form action="${pageContext.request.contextPath}/login" class="form-signin" method="post">
-				<h1 class="h3 mb-3 font-weight-bold">Bulletin Board</h1>
+				<h1 class="h3 mb-3 font-weight-bold">JSP Bulletin Board</h1>
 				<%
 					if (id == null) {
 				%>

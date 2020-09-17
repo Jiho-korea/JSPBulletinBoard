@@ -13,7 +13,7 @@
 	margin-top: 50px;
 }
 </style>
-<script defer src="https://code.jquery.com/jquery-3.1.1.min.js" charset="utf-8"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" charset="utf-8"></script>
 <script defer
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" charset="utf-8"></script>
 <title>회원가입 페이지</title>
@@ -57,50 +57,9 @@
 		</div>
 
 	</div>
-
-
-	<%--  ////////////////////////////////////////////////           
-	<h4 align="center">회원가입</h4>
-	<form method="post"
-		action="${pageContext.request.contextPath}/register"
-		onsubmit="return clickEvent()">
-		<table border="1" align="center" width="30%">
-			<tr>
-				<td colspan="2"><input type="text" name="name" placeholder="이름"
-					id="name" required /></td>
-			</tr>
-
-			<tr>
-				<td colspan="2"><input type="number" name="sid"
-					placeholder="학번" id="sid" required /></td>
-			</tr>
-
-			<tr>
-				<td><input type="password" name="password" id="userPassword"
-					placeholder="비밀번호" required /></td>
-				<td><input type="password" id="checkPassword"
-					placeholder="비밀번호 확인" required /></td>
-			</tr>
-
-			<tr>
-				<td colspan="2"><input type="number" name="grade" id="grade"
-					placeholder="학년" required /></td>
-			</tr>
-
-			<tr>
-				<td colspan="2"><input type="text" name="subject" id="subject"
-					placeholder="학과" required /></td>
-			</tr>
-
-			<tr>
-				<td colspan="2" align="center"><input type="submit"
-					value="회원가입" /></td>
-			</tr>
-		</table>
-	</form>
-	 --%>
+	
 </body>
-<script type="text/javascript" charset="utf-8">
+<script defer type="text/javascript" charset="utf-8">
 	$("#btn_register").click(function clickEvent() {
 		var userPassword = $("#userPassword").val();
 		var checkPassword = $("#checkPassword").val();
