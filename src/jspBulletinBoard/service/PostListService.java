@@ -23,7 +23,7 @@ public class PostListService {
 		List<Object> postList = postDAO.listPost(pageNumber);
 		if (pageNumber != 1 && (postList == null || postList.isEmpty())) {
 			// 존재 하지 않는 페이지 일때 Exception 발생
-			throw new NonExistentPageException("non-existent " + pageNumber);
+			throw new NonExistentPageException("non-existent page" + pageNumber);
 		}
 		return postList;
 	}

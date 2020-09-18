@@ -19,7 +19,7 @@ public class DeleteCommentHandler implements ComHandlerInterface {
 		response.setCharacterEncoding("UTF-8");
 
 		HttpSession session = request.getSession();
-		String sid = (String) session.getAttribute("login");
+		int sid = (Integer) session.getAttribute("login");
 
 		int commentNo = 0;
 		int postNo = 0;
@@ -47,7 +47,7 @@ public class DeleteCommentHandler implements ComHandlerInterface {
 
 			comment = commentDAO.selectComment(commentParam);
 
-			if (comment != null && !sid.equals(comment.getSid() + "")) {
+			if (comment != null && !(sid == comment.getSid())) {
 				PrintWriter script = response.getWriter();
 				script.println("<script>");
 				script.println("alert(\"권한이 없습니다.\");");
@@ -68,7 +68,7 @@ public class DeleteCommentHandler implements ComHandlerInterface {
 
 		if (success == 1) {
 			request.removeAttribute("comment");
-			return "/from/post?postNo=" + postNo;
+			return "/from/post?postNo=" + postNo + "&commentNo=0";
 
 		} else {
 			PrintWriter script = response.getWriter();

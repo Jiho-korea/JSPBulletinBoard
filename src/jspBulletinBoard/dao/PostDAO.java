@@ -61,7 +61,7 @@ public class PostDAO {
 	}
 
 //댓글까지 포함된 게시글 정보 받아온다.
-	public Post getPostInfo(Post pPost) {
+	public Post selectPostInfo(Post pPost) {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		Post post = null;
 		try {

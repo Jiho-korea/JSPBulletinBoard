@@ -19,7 +19,7 @@ public class PostingHandler implements ComHandlerInterface {
 		response.setCharacterEncoding("UTF-8");
 
 		HttpSession session = request.getSession();
-		String SID = (String) session.getAttribute("login");
+		int SID = (Integer) session.getAttribute("login");
 
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
@@ -38,7 +38,7 @@ public class PostingHandler implements ComHandlerInterface {
 		Post postParam = new Post();
 		postParam.setPostNo(postNo);
 		postParam.setTitle(title);
-		postParam.setSid(Integer.parseInt(SID));
+		postParam.setSid(SID);
 		postParam.setContent(content);
 
 		int updateQuery = postDAO.write(postParam);

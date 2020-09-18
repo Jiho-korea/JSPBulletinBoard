@@ -19,7 +19,7 @@ public class UpdatePageHandler implements ComHandlerInterface {
 		response.setCharacterEncoding("UTF-8");
 
 		HttpSession session = request.getSession();
-		String sid = (String) session.getAttribute("login");
+		int sid = (Integer) session.getAttribute("login");
 
 		int postNo = 0;
 		if (request.getParameter("postNo") != null) {
@@ -43,7 +43,7 @@ public class UpdatePageHandler implements ComHandlerInterface {
 
 			post = postDAO.selectPost(postParam);
 			if (post != null) {
-				if (!sid.equals(post.getSid() + "")) {
+				if (!(sid == post.getSid())) {
 					PrintWriter script = response.getWriter();
 					script.println("<script>");
 					script.println("alert(\"권한이 없습니다.\");");

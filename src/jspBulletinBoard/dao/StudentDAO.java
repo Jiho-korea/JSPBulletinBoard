@@ -80,7 +80,8 @@ public class StudentDAO {
 		Student student = new Student();
 		student.setSid(sid);
 		try {
-			student = sqlSession.selectOne("org.mybatis.persistence.StudentMapper.selectStudent", student);
+			student = sqlSession.selectOne("org.mybatis.persistence.StudentMapper.selectBySid", student);
+
 			return student;
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -123,20 +123,13 @@
 							if (updateComment != null && updateComment.getCommentNo() == comment.getCommentNo()) {
 						%> <%-- 이곳 수정해야함 --%>
 
-
-
-
 						<div class="form-group">
 							<div class="input-group">
 								<form
 									action="${pageContext.request.contextPath}/from/updatecomment?postNo=<%=post.getPostNo() %>&commentNo=<%=comment.getCommentNo()%>"
 									method="post">
 
-									<%-- 
-									<input type="text" class="form-control"
-									placeholder="Recipient's username"
-									aria-label="Recipient's username with two button addons"
-									aria-describedby="button-addon4">--%>
+		
 
 									<textarea rows="3" cols="100" class="form-control"
 										name="commentContent" aria-describedby="button-addon4"><%=comment.getCommentContent()%></textarea>
@@ -149,16 +142,7 @@
 											<button class="btn btn-outline-secondary" type="button">취소</button>
 										</a>
 									</div>
-									<%-- 
-									<input type="submit" value="수정" /> <a
-										href="${pageContext.request.contextPath}/from/post?postNo=<%=post.getPostNo() %>">
-										<input type="button" value="취소" />
-									</a>
-									
-									<div class="input-group-append">
-										<button class="btn btn-outline-secondary" type="submit"
-											id="button-addon1_u">수정</button>
-									</div>--%>
+								
 								</form>
 
 

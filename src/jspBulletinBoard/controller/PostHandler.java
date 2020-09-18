@@ -10,6 +10,11 @@ import javax.servlet.http.HttpSession;
 import common.ComHandlerInterface;
 import jspBulletinBoard.dao.CommentDAO;
 import jspBulletinBoard.dao.PostDAO;
+import jspBulletinBoard.exception.NonExistentCommentException;
+import jspBulletinBoard.exception.NonExistentPostException;
+import jspBulletinBoard.exception.UnauthenticatedException;
+import jspBulletinBoard.service.UpdateCommentService;
+import jspBulletinBoard.service.ViewPostService;
 import jspBulletinBoard.vo.Comment;
 import jspBulletinBoard.vo.Post;
 import jspBulletinBoard.vo.Student;
@@ -18,8 +23,8 @@ public class PostHandler implements ComHandlerInterface {
 
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		HttpSession session = request.getSession();
 		response.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession();
 
 		String postNo = request.getParameter("postNo");
 		Student student = (Student) session.getAttribute("student");
@@ -28,7 +33,7 @@ public class PostHandler implements ComHandlerInterface {
 		if (request.getParameter("commentNo") != null && !"0".equals(request.getParameter("commentNo"))) {
 			commentNo = Integer.parseInt(request.getParameter("commentNo"));
 		}
-
+		// 이상한 글번호를 파라미터로 주었을 때
 		if (postNo == null || postNo.equals("")) {
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
@@ -38,46 +43,61 @@ public class PostHandler implements ComHandlerInterface {
 			return null;
 		}
 
-		Post postParam = new Post();
-		postParam.setPostNo(Integer.parseInt(postNo));
+		Post post = new Post();
+		post.setPostNo(Integer.parseInt(postNo));
 
-		PostDAO postDAO = new PostDAO();
-		Post post = postDAO.getPostInfo(postParam);
-
-		if (post == null) {
-			PrintWriter script = response.getWriter();
-			script.println("<script>");
-			script.println("alert(\"존재하지 않는 게시글 입니다.\");");
-			script.println("location.href = '../from/board'");
-			script.println("</script>");
-			return null;
-		} else {
+		// 수정
+		ViewPostService viewPostService = new ViewPostService(new PostDAO());
+		try {
+			post = viewPostService.getPostInfo(post);
 			request.setAttribute("post", post);
+
+			// 댓글 수정하려 할 때 수행됨
 			if (commentNo != 0) {
-				CommentDAO commentDAO = new CommentDAO();
+				UpdateCommentService updateCommentService = new UpdateCommentService(new CommentDAO());
 				Comment comment = new Comment();
 				comment.setCommentNo(commentNo);
-				comment = commentDAO.selectComment(comment);
+				try {
+					comment = updateCommentService.getComment(comment, student);
+					request.setAttribute("comment", comment);
 
-				if (comment != null && student.getSid() != comment.getSid()) {
+				} catch (NonExistentCommentException e) { // 존재하지 않는 댓글을 수정하려 할 때
+					PrintWriter script = response.getWriter();
+					script.println("<script>");
+					script.println("alert(\"존재하지 않는 댓글 입니다.\");"); // 여기서 오류가 나오네
+					script.println("history.go(-1)");
+					script.println("</script>");
+					script.flush();
+					return null;
+				} catch (UnauthenticatedException e) { // 댓글 수정 권한이 없을 때
 					PrintWriter script = response.getWriter();
 					script.println("<script>");
 					script.println("alert(\"권한이 없습니다.\");");
 					script.println("history.go(-1)");
 					script.println("</script>");
+					script.flush();
 					return null;
-				} /*
-					 * else if (comment == null) { PrintWriter script = response.getWriter();
-					 * script.println("<script>"); script.println("alert(\"존재하지 않는 댓글 입니다.\");");
-					 * script.println("history.go(-1)"); script.println("</script>"); return null; }
-					 */ else {
-					request.setAttribute("comment", comment);
-
 				}
 			}
 			return "/WEB-INF/postPage.jsp";
 
+		} catch (NonExistentPostException e) {
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert(\"존재하지 않는 게시글 입니다.\");");
+			script.println("location.href = '../from/board'");
+			script.println("</script>");
+			script.flush();
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert(\"알 수 없는오류.\");");
+			script.println("location.href = '../from/board'");
+			script.println("</script>");
+			script.flush();
+			return null;
 		}
 	}
-
 }
