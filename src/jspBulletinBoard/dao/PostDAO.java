@@ -44,7 +44,7 @@ public class PostDAO {
 		}
 	}
 
-	public List<Object> postList(int pageNumber) { // date_format(POSTINGDATE,'%Y-%m-%d') as POSTINGDATE 으로 간단하게 뽑을
+	public List<Object> listPost(int pageNumber) { // date_format(POSTINGDATE,'%Y-%m-%d') as POSTINGDATE 으로 간단하게 뽑을
 													// 수도있다.
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		List<Object> postList = null;

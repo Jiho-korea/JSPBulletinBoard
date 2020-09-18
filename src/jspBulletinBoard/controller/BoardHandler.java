@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import common.ComHandlerInterface;
 import jspBulletinBoard.dao.PostDAO;
+import jspBulletinBoard.exception.NonExistentPageException;
+import jspBulletinBoard.service.PostListService;
 
 public class BoardHandler implements ComHandlerInterface {
 
@@ -22,24 +24,51 @@ public class BoardHandler implements ComHandlerInterface {
 		}
 		boolean nextPage = false;
 
-		PostDAO postDAO = new PostDAO();
-		nextPage = postDAO.nextPage(pageNumber);
-
-		List<Object> postList = postDAO.postList(pageNumber);
-		if (pageNumber != 1 && (postList == null || postList.isEmpty())) {
+		// 수정
+		PostListService postListService = new PostListService(new PostDAO());
+		nextPage = postListService.nextPage(pageNumber);
+		try {
+			List<Object> postList = postListService.postList(pageNumber);
+			request.setAttribute("pageNumber", pageNumber);
+			request.setAttribute("nextPage", nextPage);
+			request.setAttribute("postList", postList);
+			return "/WEB-INF/boardPage.jsp";
+		} catch (NonExistentPageException e) {
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("alert(\"존재하지 않는 페이지입니다.\");");
 			script.println("history.go(-1)");
 			script.println("</script>");
 			return null;
-		} else {
-			request.setAttribute("pageNumber", pageNumber);
-			request.setAttribute("nextPage", nextPage);
-			request.setAttribute("postList", postList);
-			return "/WEB-INF/boardPage.jsp";
-
+		} catch (Exception e) {
+			e.printStackTrace();
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert(\"알 수 없는 오류.\");");
+			script.println("history.go(-1)");
+			script.println("</script>");
+			return null;
 		}
+
+		// 수정
+//		PostDAO postDAO = new PostDAO();
+//		nextPage = postDAO.nextPage(pageNumber); //
+//
+//		List<Object> postList = postDAO.listPost(pageNumber);
+//		if (pageNumber != 1 && (postList == null || postList.isEmpty())) {
+//			PrintWriter script = response.getWriter();
+//			script.println("<script>");
+//			script.println("alert(\"존재하지 않는 페이지입니다.\");");
+//			script.println("history.go(-1)");
+//			script.println("</script>");
+//			return null;
+//		} else {
+//			request.setAttribute("pageNumber", pageNumber);
+//			request.setAttribute("nextPage", nextPage);
+//			request.setAttribute("postList", postList);
+//			return "/WEB-INF/boardPage.jsp";
+//
+//		}
 	}
 
 }
