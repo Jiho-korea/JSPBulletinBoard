@@ -9,6 +9,8 @@ import javax.servlet.http.HttpSession;
 
 import common.ComHandlerInterface;
 import jspBulletinBoard.dao.PostDAO;
+import jspBulletinBoard.exception.PostingException;
+import jspBulletinBoard.service.PostService;
 import jspBulletinBoard.vo.Post;
 
 public class PostingHandler implements ComHandlerInterface {
@@ -30,28 +32,26 @@ public class PostingHandler implements ComHandlerInterface {
 			script.println("alert(\"입력안된 사항이 있습니다.\");");
 			script.println("history.go(-1)");
 			script.println("</script>");
+			script.flush();
 		}
 
-		PostDAO postDAO = new PostDAO();
-		int postNo = postDAO.getPostNo();
-		// String postNo , String title, String sid , String content
-		Post postParam = new Post();
-		postParam.setPostNo(postNo);
-		postParam.setTitle(title);
-		postParam.setSid(SID);
-		postParam.setContent(content);
+		Post post = new Post();
+		post.setTitle(title);
+		post.setSid(SID);
+		post.setContent(content);
 
-		int updateQuery = postDAO.write(postParam);
-
-		if (updateQuery == 1) {
+		try {
+			PostService postService = new PostService(new PostDAO());
+			postService.post(post);
 			response.sendRedirect("board");
 			return null;
-		} else {
+		} catch (PostingException e) {
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("alert(\"게시글 작성 실패.\");");
 			script.println("history.go(-1)");
 			script.println("</script>");
+			script.flush();
 			return null;
 		}
 	}

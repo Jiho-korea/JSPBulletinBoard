@@ -140,7 +140,7 @@ public class PostDAO {
 	}
 
 	// postNo , title, sid , content
-	public int write(Post pPost) {
+	public int insertPost(Post pPost) {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		int success = 0;
 		try {
