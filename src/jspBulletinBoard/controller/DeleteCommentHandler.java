@@ -9,6 +9,10 @@ import javax.servlet.http.HttpSession;
 
 import common.ComHandlerInterface;
 import jspBulletinBoard.dao.CommentDAO;
+import jspBulletinBoard.exception.DeletingCommentException;
+import jspBulletinBoard.exception.NonExistentCommentException;
+import jspBulletinBoard.exception.UnauthenticatedException;
+import jspBulletinBoard.service.DeleteCommentService;
 import jspBulletinBoard.vo.Comment;
 
 public class DeleteCommentHandler implements ComHandlerInterface {
@@ -25,59 +29,63 @@ public class DeleteCommentHandler implements ComHandlerInterface {
 		int postNo = 0;
 		if (request.getParameter("commentNo") != null) {
 			commentNo = Integer.parseInt(request.getParameter("commentNo"));
-		}
-		if (request.getParameter("postNo") != null) {
-			postNo = Integer.parseInt(request.getParameter("postNo"));
-		}
-
-		Comment commentParam = new Comment();
-		commentParam.setCommentNo(commentNo);
-
-		CommentDAO commentDAO = new CommentDAO();
-		Comment comment = new Comment();
-
-		if (commentNo == 0) {
+		} else {
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("alert(\"유효하지 않은 댓글입니다.\");");
 			script.println("history.go(-1)");
 			script.println("</script>");
+			script.flush();
 			return null;
-		} else {
-
-			comment = commentDAO.selectComment(commentParam);
-
-			if (comment != null && !(sid == comment.getSid())) {
-				PrintWriter script = response.getWriter();
-				script.println("<script>");
-				script.println("alert(\"권한이 없습니다.\");");
-				script.println("history.go(-1)");
-				script.println("</script>");
-				return null;
-			} else if (comment == null) {
-				PrintWriter script = response.getWriter();
-				script.println("<script>");
-				script.println("alert(\"존재하지 않는 댓글 입니다.\");");
-				script.println("history.go(-1)");
-				script.println("</script>");
-				return null;
-			}
 		}
 
-		int success = commentDAO.deleteComment(commentParam);
+		if (request.getParameter("postNo") != null) {
+			postNo = Integer.parseInt(request.getParameter("postNo"));
+		} else {
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert(\"유효하지 않은 게시글입니다.\");");
+			script.println("history.go(-1)");
+			script.println("</script>");
+			script.flush();
+			return null;
+		}
 
-		if (success == 1) {
+		Comment comment = new Comment();
+		comment.setCommentNo(commentNo);
+
+		try {
+			DeleteCommentService deleteCommentService = new DeleteCommentService(new CommentDAO());
+			deleteCommentService.deleteComment(sid, comment);
 			request.removeAttribute("comment");
 			return "/from/post?postNo=" + postNo + "&commentNo=0";
 
-		} else {
+		} catch (NonExistentCommentException e) {
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert(\"존재하지 않는 댓글 입니다.\");");
+			script.println("history.go(-1)");
+			script.println("</script>");
+			script.flush();
+			return null;
+		} catch (UnauthenticatedException e) {
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert(\"권한이 없습니다.\");");
+			script.println("history.go(-1)");
+			script.println("</script>");
+			script.flush();
+			return null;
+		} catch (DeletingCommentException e) {
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("alert(\"댓글 삭제에 실패하였습니다.\");");
 			script.println("history.go(-1);");
 			script.println("</script>");
+			script.flush();
 			return null;
 		}
+
 	}
 
 }
