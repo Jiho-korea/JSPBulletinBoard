@@ -10,8 +10,6 @@ public class NullComHandler implements ComHandlerInterface {
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) {
 		response.setContentType("text/html; charset=UTF-8");
-		response.setCharacterEncoding("UTF-8");
-		// TODO Auto-generated method stub
 		return null;
 	}
 

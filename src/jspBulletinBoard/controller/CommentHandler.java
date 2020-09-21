@@ -38,8 +38,6 @@ public class CommentHandler implements ComHandlerInterface {
 		comment.setSid(sid);
 		comment.setPostNo(postNo);
 
-		// 수정
-
 		try {
 			CommentService commentService = new CommentService(new CommentDAO());
 			commentService.comment(comment);
@@ -53,21 +51,7 @@ public class CommentHandler implements ComHandlerInterface {
 			script.flush();
 			return null;
 		}
-		//
-//		CommentDAO commentDAO = new CommentDAO();
-//
-//		int success = commentDAO.insertComment(comment);
-//
-//		if (success == 1) {
-//			return "/from/post?postNo=" + postNo;
-//		} else {
-//			PrintWriter script = response.getWriter();
-//			script.println("<script>");
-//			script.println("alert(\"댓글 작성 실패.\");");
-//			script.println("history.go(-1)");
-//			script.println("</script>");
-//			return null;
-//		}
+
 	}
 
 }
