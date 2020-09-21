@@ -9,6 +9,9 @@ import javax.servlet.http.HttpSession;
 
 import common.ComHandlerInterface;
 import jspBulletinBoard.dao.PostDAO;
+import jspBulletinBoard.exception.NonExistentPostException;
+import jspBulletinBoard.exception.UnauthenticatedException;
+import jspBulletinBoard.service.UpdatePostService;
 import jspBulletinBoard.vo.Post;
 
 public class UpdatePageHandler implements ComHandlerInterface {
@@ -24,46 +27,42 @@ public class UpdatePageHandler implements ComHandlerInterface {
 		int postNo = 0;
 		if (request.getParameter("postNo") != null) {
 			postNo = Integer.parseInt(request.getParameter("postNo"));
-		}
-
-		Post postParam = new Post();
-		postParam.setPostNo(postNo);
-
-		PostDAO postDAO = new PostDAO();
-		Post post = new Post();
-
-		if (postNo == 0) {
+		} else {
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("alert(\"유효하지 않은 글입니다..\");");
 			script.println("location.href = '../from/board'");
 			script.println("</script>");
+			script.flush();
 			return null;
-		} else {
-
-			post = postDAO.selectPost(postParam);
-			if (post != null) {
-				if (!(sid == post.getSid())) {
-					PrintWriter script = response.getWriter();
-					script.println("<script>");
-					script.println("alert(\"권한이 없습니다.\");");
-					script.println("location.href = '../from/board'");
-					script.println("</script>");
-					return null;
-				} else {
-					request.setAttribute("post", post);
-					return "/WEB-INF/updatePostPage.jsp";
-
-				}
-			} else {
-				PrintWriter script = response.getWriter();
-				script.println("<script>");
-				script.println("alert(\"존재하지 않는 게시글 입니다.\");");
-				script.println("location.href = '../from/board'");
-				script.println("</script>");
-				return null;
-			}
 		}
+
+		Post post = new Post();
+		post.setPostNo(postNo);
+
+		try {
+			UpdatePostService updatePostService = new UpdatePostService(new PostDAO());
+			post = updatePostService.requestUpdatingPostPage(sid, post);
+			request.setAttribute("post", post);
+			return "/WEB-INF/updatePostPage.jsp";
+		} catch (NonExistentPostException e) {
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert(\"존재하지 않는 게시글 입니다.\");");
+			script.println("location.href = '../from/board'");
+			script.println("</script>");
+			script.flush();
+			return null;
+		} catch (UnauthenticatedException e) {
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert(\"권한이 없습니다.\");");
+			script.println("location.href = '../from/board'");
+			script.println("</script>");
+			script.flush();
+			return null;
+		}
+
 	}
 
 }

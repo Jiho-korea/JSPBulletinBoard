@@ -4,7 +4,6 @@ import jspBulletinBoard.dao.CommentDAO;
 import jspBulletinBoard.exception.NonExistentCommentException;
 import jspBulletinBoard.exception.UnauthenticatedException;
 import jspBulletinBoard.vo.Comment;
-import jspBulletinBoard.vo.Student;
 
 public class UpdateCommentService {
 	private CommentDAO commentDAO;
@@ -14,13 +13,13 @@ public class UpdateCommentService {
 		this.commentDAO = commentDAO;
 	}
 
-	public Comment getComment(Comment comment, Student student) {
+	public Comment getComment(Comment comment, int sid) {
 		comment = commentDAO.selectComment(comment);
 		if (comment == null) {
 			throw new NonExistentCommentException("non-existent comment");
 		}
-		if (comment != null && student.getSid() != comment.getSid()) {
-			throw new UnauthenticatedException("unauthenticated student :" + student.getSid());
+		if (comment != null && sid != comment.getSid()) {
+			throw new UnauthenticatedException("unauthenticated student :" + sid);
 		}
 		return comment;
 	}

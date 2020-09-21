@@ -14,7 +14,7 @@ public class StudentRegisterService {
 	public Boolean regist(Student student) {
 		int checkRegistration = studentDAO.selectBySid(student);
 		if (checkRegistration == 1) {
-			throw new DuplicateStudentException("dup email " + student.getSid());
+			throw new DuplicateStudentException("dup sid " + student.getSid());
 		}
 
 		int updateCount = 0;

@@ -17,7 +17,6 @@ import jspBulletinBoard.service.UpdateCommentService;
 import jspBulletinBoard.service.ViewPostService;
 import jspBulletinBoard.vo.Comment;
 import jspBulletinBoard.vo.Post;
-import jspBulletinBoard.vo.Student;
 
 public class PostHandler implements ComHandlerInterface {
 
@@ -27,7 +26,7 @@ public class PostHandler implements ComHandlerInterface {
 		HttpSession session = request.getSession();
 
 		String postNo = request.getParameter("postNo");
-		Student student = (Student) session.getAttribute("student");
+		int sid = (Integer) session.getAttribute("login");
 		// 댓글을 수정하려는지 검사하는 코드
 		int commentNo = 0;
 		if (request.getParameter("commentNo") != null && !"0".equals(request.getParameter("commentNo"))) {
@@ -58,7 +57,7 @@ public class PostHandler implements ComHandlerInterface {
 				Comment comment = new Comment();
 				comment.setCommentNo(commentNo);
 				try {
-					comment = updateCommentService.getComment(comment, student);
+					comment = updateCommentService.getComment(comment, sid);
 					request.setAttribute("comment", comment);
 
 				} catch (NonExistentCommentException e) { // 존재하지 않는 댓글을 수정하려 할 때

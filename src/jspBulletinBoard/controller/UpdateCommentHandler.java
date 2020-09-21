@@ -10,7 +10,6 @@ import javax.servlet.http.HttpSession;
 import common.ComHandlerInterface;
 import jspBulletinBoard.dao.CommentDAO;
 import jspBulletinBoard.vo.Comment;
-import jspBulletinBoard.vo.Student;
 
 public class UpdateCommentHandler implements ComHandlerInterface {
 
@@ -20,7 +19,7 @@ public class UpdateCommentHandler implements ComHandlerInterface {
 		response.setCharacterEncoding("UTF-8");
 
 		HttpSession session = request.getSession();
-		Student student = (Student) session.getAttribute("student");
+		int sid = (Integer) session.getAttribute("login");
 
 		String commentContent = request.getParameter("commentContent");
 
@@ -58,7 +57,7 @@ public class UpdateCommentHandler implements ComHandlerInterface {
 
 		comment = commentDAO.selectComment(commentParam);
 
-		if (comment != null && student.getSid() != comment.getSid()) {
+		if (comment != null && sid != comment.getSid()) {
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("alert(\"권한이 없습니다.\");");
