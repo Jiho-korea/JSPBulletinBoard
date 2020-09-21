@@ -9,17 +9,18 @@ import javax.servlet.http.HttpSession;
 
 import common.ComHandlerInterface;
 import jspBulletinBoard.dao.CommentDAO;
+import jspBulletinBoard.exception.CommentingException;
+import jspBulletinBoard.service.CommentService;
 import jspBulletinBoard.vo.Comment;
-import jspBulletinBoard.vo.Student;
 
 public class CommentHandler implements ComHandlerInterface {
 
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("text/html; charset=UTF-8");
-		response.setCharacterEncoding("UTF-8");
+
 		HttpSession session = request.getSession();
-		Student student = (Student) session.getAttribute("student");
+		int sid = (Integer) session.getAttribute("login");
 
 		int postNo = Integer.parseInt(request.getParameter("postNo"));
 		String commentContent = request.getParameter("commentContent");
@@ -34,23 +35,39 @@ public class CommentHandler implements ComHandlerInterface {
 
 		Comment comment = new Comment();
 		comment.setCommentContent(commentContent);
-		comment.setSid(student.getSid());
+		comment.setSid(sid);
 		comment.setPostNo(postNo);
 
-		CommentDAO commentDAO = new CommentDAO();
+		// 수정
 
-		int success = commentDAO.insertComment(comment);
-
-		if (success == 1) {
+		try {
+			CommentService commentService = new CommentService(new CommentDAO());
+			commentService.comment(comment);
 			return "/from/post?postNo=" + postNo;
-		} else {
+		} catch (CommentingException e) {
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("alert(\"댓글 작성 실패.\");");
 			script.println("history.go(-1)");
 			script.println("</script>");
+			script.flush();
 			return null;
 		}
+		//
+//		CommentDAO commentDAO = new CommentDAO();
+//
+//		int success = commentDAO.insertComment(comment);
+//
+//		if (success == 1) {
+//			return "/from/post?postNo=" + postNo;
+//		} else {
+//			PrintWriter script = response.getWriter();
+//			script.println("<script>");
+//			script.println("alert(\"댓글 작성 실패.\");");
+//			script.println("history.go(-1)");
+//			script.println("</script>");
+//			return null;
+//		}
 	}
 
 }

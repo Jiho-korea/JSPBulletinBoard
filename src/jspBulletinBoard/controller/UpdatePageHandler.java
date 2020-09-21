@@ -61,6 +61,15 @@ public class UpdatePageHandler implements ComHandlerInterface {
 			script.println("</script>");
 			script.flush();
 			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert(\"게시글 수정 페이지 이동  실패.\");");
+			script.println("history.go(-1)");
+			script.println("</script>");
+			script.flush();
+			return null;
 		}
 
 	}
