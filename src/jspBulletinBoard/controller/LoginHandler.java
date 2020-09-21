@@ -61,6 +61,7 @@ public class LoginHandler implements ComHandlerInterface {
 			script.println("alert(\"로그인 실패.\");");
 			script.println("history.go(-1)");
 			script.println("</script>");
+			script.flush();
 			return null;
 		}
 

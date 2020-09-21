@@ -9,6 +9,10 @@ import javax.servlet.http.HttpSession;
 
 import common.ComHandlerInterface;
 import jspBulletinBoard.dao.PostDAO;
+import jspBulletinBoard.exception.DeletingPostException;
+import jspBulletinBoard.exception.NonExistentPostException;
+import jspBulletinBoard.exception.UnauthenticatedException;
+import jspBulletinBoard.service.DeletePostService;
 import jspBulletinBoard.vo.Post;
 
 public class DeletePostHandler implements ComHandlerInterface {
@@ -19,57 +23,52 @@ public class DeletePostHandler implements ComHandlerInterface {
 		response.setCharacterEncoding("UTF-8");
 
 		HttpSession session = request.getSession();
-		String sid = (String) session.getAttribute("login");
+		int sid = (Integer) session.getAttribute("login");
 
 		int postNo = 0;
 		if (request.getParameter("postNo") != null) {
 			postNo = Integer.parseInt(request.getParameter("postNo"));
-		}
-
-		Post postParam = new Post();
-		postParam.setPostNo(postNo);
-
-		PostDAO postDAO = new PostDAO();
-		Post post = new Post();
-
-		if (postNo == 0) {
+		} else {
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("alert(\"유효하지 않은 글입니다.\");");
 			script.println("location.href = '../from/board'");
 			script.println("</script>");
-		} else {
-
-			post = postDAO.selectPost(postParam);
-
-			if (post != null && !sid.equals(post.getSid() + "")) {
-				PrintWriter script = response.getWriter();
-				script.println("<script>");
-				script.println("alert(\"권한이 없습니다.\");");
-				script.println("location.href = '../from/board'");
-				script.println("</script>");
-			} else if (post == null) {
-				PrintWriter script = response.getWriter();
-				script.println("<script>");
-				script.println("alert(\"존재하지 않는 게시글 입니다.\");");
-				script.println("location.href = '../from/board'");
-				script.println("</script>");
-			}
+			script.flush();
+			return null;
 		}
 
-		int updateQuery = postDAO.deletePost(postParam);
+		Post post = new Post();
+		post.setPostNo(postNo);
 
-		if (updateQuery == 1) {
+		try {
+			DeletePostService deletePostService = new DeletePostService(new PostDAO());
+			deletePostService.deletePost(sid, post);
 			response.sendRedirect("../from/board");
 			return null;
-		} else {
+		} catch (NonExistentPostException e) {
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
-			script.println("alert(\"삭제에 실패하였습니다.\");");
+			script.println("alert(\"존재하지 않는 게시글 입니다.\");");
+			script.println("location.href = '../from/board'");
+			script.println("</script>");
+			return null;
+		} catch (UnauthenticatedException e) {
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert(\"권한이 없습니다.\");");
+			script.println("location.href = '../from/board'");
+			script.println("</script>");
+			return null;
+		} catch (DeletingPostException e) {
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert(\"게시글 삭제에 실패하였습니다.\");");
 			script.println("history.go(-1);");
 			script.println("</script>");
 			return null;
 		}
+
 	}
 
 }

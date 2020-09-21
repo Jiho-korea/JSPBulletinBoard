@@ -24,7 +24,6 @@ public class BoardHandler implements ComHandlerInterface {
 		}
 		boolean nextPage = false;
 
-		// 수정
 		PostListService postListService = new PostListService(new PostDAO());
 		nextPage = postListService.nextPage(pageNumber);
 		try {
@@ -47,28 +46,10 @@ public class BoardHandler implements ComHandlerInterface {
 			script.println("alert(\"알 수 없는 오류.\");");
 			script.println("history.go(-1)");
 			script.println("</script>");
+			script.flush();
 			return null;
 		}
 
-		// 수정
-//		PostDAO postDAO = new PostDAO();
-//		nextPage = postDAO.nextPage(pageNumber); //
-//
-//		List<Object> postList = postDAO.listPost(pageNumber);
-//		if (pageNumber != 1 && (postList == null || postList.isEmpty())) {
-//			PrintWriter script = response.getWriter();
-//			script.println("<script>");
-//			script.println("alert(\"존재하지 않는 페이지입니다.\");");
-//			script.println("history.go(-1)");
-//			script.println("</script>");
-//			return null;
-//		} else {
-//			request.setAttribute("pageNumber", pageNumber);
-//			request.setAttribute("nextPage", nextPage);
-//			request.setAttribute("postList", postList);
-//			return "/WEB-INF/boardPage.jsp";
-//
-//		}
 	}
 
 }

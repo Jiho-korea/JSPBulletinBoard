@@ -45,9 +45,8 @@ public class PostHandler implements ComHandlerInterface {
 		Post post = new Post();
 		post.setPostNo(Integer.parseInt(postNo));
 
-		// 수정
-		ViewPostService viewPostService = new ViewPostService(new PostDAO());
 		try {
+			ViewPostService viewPostService = new ViewPostService(new PostDAO());
 			post = viewPostService.getPostInfo(post);
 			request.setAttribute("post", post);
 

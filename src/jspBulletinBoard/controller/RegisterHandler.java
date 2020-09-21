@@ -66,38 +66,6 @@ public class RegisterHandler implements ComHandlerInterface {
 			script.println("</script>");
 			return null;
 		}
-		//
-
-//		StudentDAO studentDAO = new StudentDAO();
-//
-//		int checkRegistration = studentDAO.checkRegistration(studentParam);
-//		int updateCount = 0;
-//
-//		if (checkRegistration == 1) {
-//			PrintWriter script = response.getWriter();
-//			script.println("<script>");
-//			script.println("alert(\"이미 같은 학번이 존재합니다.\");");
-//			script.println("history.go(-1)");
-//			script.println("</script>");
-//			return null;
-//		} else {
-//			updateCount = studentDAO.register(studentParam);
-//			if (updateCount == 1) {
-//				PrintWriter script = response.getWriter();
-//				script.println("<script>");
-//				script.println("alert(\"회원가입 완료. 로그인 해주세요.\");");
-//				script.println(" window.location = '" + request.getContextPath() + "/loginFormPage.jsp';");
-//				script.println("</script>");
-//				return null;
-//			} else {
-//				PrintWriter script = response.getWriter();
-//				script.println("<script>");
-//				script.println("alert(\"회원가입 실패.\");");
-//				script.println("history.go(-1)");
-//				script.println("</script>");
-//				return null;
-//			}
-//		}
 
 	}
 
