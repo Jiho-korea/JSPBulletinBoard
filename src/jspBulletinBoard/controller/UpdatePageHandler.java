@@ -44,7 +44,7 @@ public class UpdatePageHandler implements ComHandlerInterface {
 			UpdatePostService updatePostService = new UpdatePostService(new PostDAO());
 			post = updatePostService.requestUpdatingPostPage(sid, post);
 			request.setAttribute("post", post);
-			return "/WEB-INF/updatePostPage.jsp";
+			return "/WEB-INF/views/updatePostPage.jsp";
 		} catch (NonExistentPostException e) {
 			PrintWriter script = response.getWriter();
 			script.println("<script>");

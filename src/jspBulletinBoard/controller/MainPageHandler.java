@@ -19,7 +19,7 @@ public class MainPageHandler implements ComHandlerInterface {
 		boolean loginCheck = (sid == null) ? false : true;
 
 		if (loginCheck) {
-			return "/WEB-INF/mainPage.jsp";
+			return "/WEB-INF/views/mainPage.jsp";
 		} else {
 			return "/loginPage.jsp";
 		}

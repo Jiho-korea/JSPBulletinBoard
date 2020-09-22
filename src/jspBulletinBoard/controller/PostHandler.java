@@ -77,7 +77,7 @@ public class PostHandler implements ComHandlerInterface {
 					return null;
 				}
 			}
-			return "/WEB-INF/postPage.jsp";
+			return "/WEB-INF/views/postPage.jsp";
 
 		} catch (NonExistentPostException e) {
 			PrintWriter script = response.getWriter();

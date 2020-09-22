@@ -31,7 +31,7 @@ public class BoardHandler implements ComHandlerInterface {
 			request.setAttribute("pageNumber", pageNumber);
 			request.setAttribute("nextPage", nextPage);
 			request.setAttribute("postList", postList);
-			return "/WEB-INF/boardPage.jsp";
+			return "/WEB-INF/views/boardPage.jsp";
 		} catch (NonExistentPageException e) {
 			PrintWriter script = response.getWriter();
 			script.println("<script>");

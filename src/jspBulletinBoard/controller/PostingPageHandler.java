@@ -13,7 +13,7 @@ public class PostingPageHandler implements ComHandlerInterface {
 	public String process(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("text/html; charset=UTF-8");
 
-		return "/WEB-INF/postingPage.jsp";
+		return "/WEB-INF/views/postingPage.jsp";
 	}
 
 }

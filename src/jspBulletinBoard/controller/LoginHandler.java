@@ -45,7 +45,7 @@ public class LoginHandler implements ComHandlerInterface {
 				session.removeAttribute("login1");
 			}
 			session.setAttribute("student", student);
-			return "/WEB-INF/mainPage.jsp";
+			return "/WEB-INF/views/mainPage.jsp";
 
 		} catch (StudentNotFoundException e) {
 			PrintWriter script = response.getWriter();
