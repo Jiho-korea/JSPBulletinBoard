@@ -1,13 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="jspBulletinBoard.vo.Student"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<jsp:useBean id="student" class="jspBulletinBoard.vo.Student"
-	scope="session" />
 
-<%
-	int SID = (Integer)session.getAttribute("login");
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,10 +22,15 @@ a, a:hover {
 
 </head>
 <body>
+	<%-- 
 	<jsp:include page="included/top.jsp">
 		<jsp:param value="main" name="type" />
 	</jsp:include>
-
+	--%>
+	<c:import url="included/top.jsp">
+		<c:param value="main" name="type" />
+	</c:import>
+	
 	<div class="container" style="margin-top: 60px">
 		<div class="jumbotron">
 			<div class="container">

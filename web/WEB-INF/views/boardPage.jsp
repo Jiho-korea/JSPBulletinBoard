@@ -1,17 +1,7 @@
-<%@page import="jspBulletinBoard.dao.StudentDAO"%>
-<%@page import="jspBulletinBoard.dao.PostDAO"%>
-<%@page import="jspBulletinBoard.vo.Post"%>
-<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="jspBulletinBoard.vo.Student"%>
-<jsp:useBean id="student" class="jspBulletinBoard.vo.Student"
-	scope="session" />
-<%
-	List<Object> postList = (List<Object>) request.getAttribute("postList"); // 서블릿에서 request영역에 저장해둔 게시글리스트,페이지번호,다음페이지번호를 얻어옴
-	int pageNumber = (Integer) request.getAttribute("pageNumber");
-	boolean nextPage = (Boolean) request.getAttribute("nextPage");
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 
@@ -36,11 +26,9 @@ a, a:hover {
 </head>
 
 <body>
-	<jsp:include page="included/top.jsp">
-		<jsp:param value="board" name="type" />
-	</jsp:include>
-
-
+	<c:import url="included/top.jsp">
+		<c:param value="board" name="type" />
+	</c:import>
 
 	<div class="container" style="margin-top: 60px">
 		<div class="row">
@@ -59,8 +47,17 @@ a, a:hover {
 					</tr>
 				</thead>
 				<tbody>
+					<c:forEach var="post" items="${postList}">
+						<tr>
+							<td>${post.postNo}</td>
+							<td><a href="../from/post?postNo=${post.postNo}">${fn:replace(fn:replace(fn:replace(fn:replace(post.title, ' ', '&nbsp;'), '<', '&lt;'), '>', '&gt;'), '\\n', '<br>')}
+							</a></td>
+							<td>${post.sid}</td>
+							<td>${fn:substring(post.postingdate, 0, 11)}</td>
+						</tr>
+					</c:forEach>
 
-					<!-- 게시글 목록에 따라 반복하여 게시글정보(글번호,제목,작성자,작성일)를 테이블에 뿌려줌-->
+					<%-- 게시글 목록에 따라 반복하여 게시글정보(글번호,제목,작성자,작성일)를 테이블에 뿌려줌
 					<%
 						for (int i = 0; i < postList.size(); i++) {
 							Post post = (Post) postList.get(i);
@@ -76,7 +73,7 @@ a, a:hover {
 					<%
 						}
 					%>
-
+					--%>
 				</tbody>
 			</table>
 
@@ -84,22 +81,20 @@ a, a:hover {
 
 		</div>
 		<div style="float: left">
-			<%
-				if (pageNumber != 1) {
-			%>
-			<a
-				href="${pageContext.request.contextPath}/from/board?pageNumber=<%=pageNumber  - 1%>"
-				class="btn btn-secondary" style="margin-left: 20px">◀</a>
-			<%
-				}
-				if (nextPage) {
-			%>
-			<a
-				href="${pageContext.request.contextPath}/from/board?pageNumber=<%=pageNumber  + 1%>"
-				class="btn btn-secondary" style="margin-left: 20px">▶</a>
-			<%
-				}
-			%>
+
+			<c:choose>
+				<c:when test="${pageNumber ne 1}">
+					<a
+						href="${pageContext.request.contextPath}/from/board?pageNumber=${pageNumber - 1}"
+						class="btn btn-secondary" style="margin-left: 20px">◀</a>
+				</c:when>
+				<c:when test="${nextPage}">
+					<a
+						href="${pageContext.request.contextPath}/from/board?pageNumber=${pageNumber + 1}"
+						class="btn btn-secondary" style="margin-left: 20px">▶</a>
+				</c:when>
+			</c:choose>
+
 		</div>
 
 		<div style="float: right">
@@ -116,20 +111,12 @@ a, a:hover {
 
 					<button type="submit" class="btn btn-primary pull-right">검색</button>
 				</div>
-				
-				<!--<input type="text" name="title"  class="form-control" placeholder="제목">   -->
-			
 
 			</form>
 
 		</div>
 	</div>
 
-
-
-
-
 </body>
-
 
 </html>
