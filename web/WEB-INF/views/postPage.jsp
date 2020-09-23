@@ -1,22 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<%@page import="jspBulletinBoard.vo.Comment"%>
-<%@page import="java.util.List"%>
-<%@page import="jspBulletinBoard.dao.StudentDAO"%>
-<%@page import="jspBulletinBoard.dao.PostDAO"%>
-<%@page import="java.io.PrintWriter"%>
-<%@page import="jspBulletinBoard.vo.Post"%>
-
-<%@page import="jspBulletinBoard.vo.Student"%>
-<%
-	Post post = (Post) request.getAttribute("post");
-	Student student = (Student) session.getAttribute("student");
-	List<Comment> comments = post.getComments();
-
-	Comment updateComment = (Comment) request.getAttribute("comment");
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,26 +24,25 @@
 				<thead>
 					<tr>
 						<th colspan="3"
-							style="background-color: #dddddd; text-align: center"><%=post.getTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
-					.replaceAll("\n", "<br>")%></th>
+							style="background-color: #dddddd; text-align: center">${fn:replace(fn:replace(fn:replace(fn:replace(fn:replace(post.title, ' ', '&nbsp;'), '<', '&lt;'), '>', '&gt;'), '\\n', ''), '\"', '&quot;')}</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
 						<td style="width: 20%">작성자</td>
-						<td colspan="2"><%=StudentDAO.getWriter(post.getSid()).getName()%></td>
+						<td colspan="2">${post.sid}</td>
 					</tr>
 					<tr>
 						<td>작성일자</td>
-						<td colspan="2"><%=post.getPostingdate().substring(0, 11) + post.getPostingdate().substring(11, 13) + "시"
-					+ post.getPostingdate().substring(14, 16) + "분"%></td>
+						<td colspan="2">${fn:substring(post.postingdate, 0, 10)}
+							${fn:substring(post.postingdate, 11, 13)}시
+							${fn:substring(post.postingdate, 14, 16)}분</td>
 					</tr>
 					<tr>
 						<td>내용</td>
 						<td colspan="2" style="height: 200px; text-align: left">
 							<div>
-								<%=post.getContent().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
-					.replaceAll("\n", "<br>")%>
+								${fn:replace(fn:replace(fn:replace(fn:replace(fn:replace(post.content, ' ', '&nbsp;'), '<', '&lt;'), '>', '&gt;'), '\\n', ''), '\"', '&quot;')}
 							</div>
 						</td>
 					</tr>
@@ -66,24 +51,19 @@
 		</div>
 		<div style="float: right">
 
+			<c:if test="${sessionScope.login eq post.sid}">
+				<a href="../from/updatepage?postNo=${post.postNo}"
+					class="btn btn-primary">수정</a>
+				<a href="../from/delete?postNo=${post.postNo}"
+					class="btn btn-primary" onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</a>
+			</c:if>
 
-			<%
-				if (student.getSid() == post.getSid()) {
-			%>
-			<a href="../from/updatepage?postNo=<%=post.getPostNo()%>"
-				class="btn btn-primary">수정</a> <a
-				href="../from/delete?postNo=<%=post.getPostNo()%>"
-				class="btn btn-primary" onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</a>
-
-			<%
-				}
-			%>
 			<a href="../from/board" class="btn btn-primary">목록</a>
 		</div>
 
 		<br> <br>
 		<form
-			action="${pageContext.request.contextPath}/from/comment?postNo=<%=post.getPostNo() %>"
+			action="${pageContext.request.contextPath}/from/comment?postNo=${post.postNo}"
 			method="post">
 
 
@@ -103,78 +83,64 @@
 		</form>
 	</div>
 
+	<c:if test="${!empty post.comments}">
+		<div class="container" style="margin-top: 60px">
+			<div class="row">
+				<table class="table table-striped"
+					style="text-align: center; border: 1px solid #dddddd">
+					<c:forEach var="c" items="${post.comments}">
+						<tr>
+							<td width="30%">${c.sid}</td>
+							<td width="70%"><c:choose>
+									<c:when
+										test="${comment ne null && comment.commentNo eq c.commentNo}">
+										<div class="form-group">
+											<div class="input-group">
+												<form
+													action="${pageContext.request.contextPath}/from/updatecomment?postNo=${post.postNo}&commentNo=${c.commentNo}"
+													method="post">
 
 
 
-	<%
-		if (!comments.isEmpty()) {
-	%>
-	<div class="container" style="margin-top: 60px">
-		<div class="row">
-			<table class="table table-striped"
-				style="text-align: center; border: 1px solid #dddddd">
-				<%
-					for (int i = 0; i < comments.size(); i++) {
-							Comment comment = comments.get(i);
-				%>
-				<tr>
-					<!--<td width="5%"><%=comment.getCommentNo()%></td>  -->
-					<td width="30%"><%=StudentDAO.getWriter(comment.getSid()).getName()%>
-					</td>
-					<td width="70%">
-						<%
-							if (updateComment != null && updateComment.getCommentNo() == comment.getCommentNo()) {
-						%> <%-- 이곳 수정해야함 --%>
-
-						<div class="form-group">
-							<div class="input-group">
-								<form
-									action="${pageContext.request.contextPath}/from/updatecomment?postNo=<%=post.getPostNo() %>&commentNo=<%=comment.getCommentNo()%>"
-									method="post">
-
-		
-
-									<textarea rows="3" cols="100" class="form-control"
-										name="commentContent" aria-describedby="button-addon4"><%=comment.getCommentContent()%></textarea>
+													<textarea rows="3" cols="100" class="form-control"
+														name="commentContent" aria-describedby="button-addon4">${c.commentContent}</textarea>
 
 
-									<div class="input-group-append" style="float: right" id="button-addon4">
-										<button class="btn btn-outline-secondary" type="submit">수정</button>
-										<a
-											href="${pageContext.request.contextPath}/from/post?postNo=<%=post.getPostNo() %>">
-											<button class="btn btn-outline-secondary" type="button">취소</button>
-										</a>
-									</div>
-								
-								</form>
+													<div class="input-group-append" style="float: right"
+														id="button-addon4">
+														<button class="btn btn-outline-secondary" type="submit">수정</button>
+														<a
+															href="${pageContext.request.contextPath}/from/post?postNo=${post.postNo}">
+															<button class="btn btn-outline-secondary" type="button">취소</button>
+														</a>
+													</div>
+
+												</form>
 
 
-							</div>
+											</div>
 
-						</div> <%-- --%> <%
- 	} else {
- %> <%=comment.getCommentContent()%> <%
- 	if (student.getSid() == comment.getSid()) {
- %> <a
-						href="${pageContext.request.contextPath}/from/post?postNo=<%=post.getPostNo() %>&commentNo=<%=comment.getCommentNo()%>"><input
-							type="button" class="btn btn-secondary btn-sm" value="수정" /></a> <a
-						href="${pageContext.request.contextPath}/from/deletecomment?commentNo=<%=comment.getCommentNo()%>&postNo=<%=post.getPostNo() %>"><input
-							type="button" class="btn btn-secondary btn-sm" value="삭제" /></a> <%
- 	}
- %> <%
- 	}
- %>
-					</td>
-				</tr>
-				<%
-					}
-				%>
-			</table>
+										</div>
+									</c:when>
+									<c:otherwise>
+										${c.commentContent}
+										<c:if test="${sessionScope.login eq c.sid}">
+											<a
+												href="${pageContext.request.contextPath}/from/post?postNo=${post.postNo}&commentNo=${c.commentNo}"><input
+												type="button" class="btn btn-secondary btn-sm" value="수정" /></a>
+											<a
+												href="${pageContext.request.contextPath}/from/deletecomment?commentNo=${c.commentNo}&postNo=${post.postNo}"><input
+												type="button" class="btn btn-secondary btn-sm" value="삭제" /></a>
+										</c:if>
+									</c:otherwise>
+								</c:choose></td>
+						</tr>
+					</c:forEach>
+
+				</table>
+			</div>
 		</div>
-	</div>
-	<%
-		}
-	%>
+	</c:if>
 
 
 </body>

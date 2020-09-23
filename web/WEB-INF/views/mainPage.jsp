@@ -22,11 +22,7 @@ a, a:hover {
 
 </head>
 <body>
-	<%-- 
-	<jsp:include page="included/top.jsp">
-		<jsp:param value="main" name="type" />
-	</jsp:include>
-	--%>
+
 	<c:import url="included/top.jsp">
 		<c:param value="main" name="type" />
 	</c:import>

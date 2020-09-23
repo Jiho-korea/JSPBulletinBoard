@@ -59,23 +59,6 @@ a, a:hover {
 						</tr>
 					</c:forEach>
 
-					<%-- 게시글 목록에 따라 반복하여 게시글정보(글번호,제목,작성자,작성일)를 테이블에 뿌려줌
-					<%
-						for (int i = 0; i < postList.size(); i++) {
-							Post post = (Post) postList.get(i);
-					%>
-					<tr>
-						<td><%=post.getPostNo()%></td>
-						<td><a href="../from/post?postNo=<%=post.getPostNo()%>"><%=post.getTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
-						.replaceAll("\n", "<br>")%></a></td>
-						<td><%=StudentDAO.getWriter(post.getSid()).getName()%></td>
-						<td><%=post.getPostingdate().substring(0, 11) + post.getPostingdate().substring(11, 13) + "시"
-						+ post.getPostingdate().substring(14, 16) + "분"%></td>
-					</tr>
-					<%
-						}
-					%>
-					--%>
 				</tbody>
 			</table>
 
