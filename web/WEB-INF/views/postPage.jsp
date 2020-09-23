@@ -1,11 +1,14 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <%@page import="jspBulletinBoard.vo.Comment"%>
 <%@page import="java.util.List"%>
 <%@page import="jspBulletinBoard.dao.StudentDAO"%>
 <%@page import="jspBulletinBoard.dao.PostDAO"%>
 <%@page import="java.io.PrintWriter"%>
 <%@page import="jspBulletinBoard.vo.Post"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+
 <%@page import="jspBulletinBoard.vo.Student"%>
 <%
 	Post post = (Post) request.getAttribute("post");
@@ -24,9 +27,9 @@
 <title>게시글 페이지</title>
 </head>
 <body>
-	<jsp:include page="included/top.jsp">
-		<jsp:param value="board" name="type" />
-	</jsp:include>
+	<c:import url="included/top.jsp">
+		<c:param value="board" name="type" />
+	</c:import>
 
 	<div class="container" style="margin-top: 60px">
 		<div class="row">

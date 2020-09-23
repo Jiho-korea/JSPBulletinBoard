@@ -4,7 +4,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width , initial-scale=1">
@@ -47,13 +46,16 @@ a, a:hover {
 					</tr>
 				</thead>
 				<tbody>
+
 					<c:forEach var="post" items="${postList}">
 						<tr>
 							<td>${post.postNo}</td>
-							<td><a href="../from/post?postNo=${post.postNo}">${fn:replace(fn:replace(fn:replace(fn:replace(post.title, ' ', '&nbsp;'), '<', '&lt;'), '>', '&gt;'), '\\n', '<br>')}
+							<td><a href="../from/post?postNo=${post.postNo}">${fn:replace(fn:replace(fn:replace(fn:replace(fn:replace(post.title, ' ', '&nbsp;'), '<', '&lt;'), '>', '&gt;'), '\\n', ''), '\"', '&quot;')}
 							</a></td>
 							<td>${post.sid}</td>
-							<td>${fn:substring(post.postingdate, 0, 11)}</td>
+							<td>${fn:split(fn:substring(post.postingdate, 0, 10),'-')[0]}년
+								${fn:split(fn:substring(post.postingdate, 0, 10),'-')[1]}월
+								${fn:split(fn:substring(post.postingdate, 0, 10),'-')[2]}일</td>
 						</tr>
 					</c:forEach>
 

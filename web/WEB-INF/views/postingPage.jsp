@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="jspBulletinBoard.vo.Student"%>
-<jsp:useBean id="student" class="jspBulletinBoard.vo.Student"
-	scope="session" />
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,10 +12,9 @@
 
 </head>
 <body>
-	<jsp:include page="included/top.jsp">
-		<jsp:param value="board" name="type" />
-	</jsp:include>
-
+	<c:import url="included/top.jsp">
+		<c:param value="board" name="type" />
+	</c:import>
 	<div class="container" style="margin-top: 60px">
 		<div class="row-col">
 			<form method="post"
@@ -34,7 +31,7 @@
 					<tbody>
 						<tr>
 							<td><input type="text" class="form-control"
-								placeholder="글 제목" name="title" maxlength="30" required
+								placeholder="글 제목" name="title" maxlength="1024" required
 								autofocus></td>
 						</tr>
 						<tr>
