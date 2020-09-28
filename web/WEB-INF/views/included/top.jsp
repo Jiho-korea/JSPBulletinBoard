@@ -2,9 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<jsp:useBean id="student" class="jspBulletinBoard.vo.Student"
-	scope="session" />
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -62,13 +59,12 @@ a, a:hover {
 							href="${pageContext.request.contextPath}/from/board">게시판</a></li>
 					</c:when>
 				</c:choose>
-				
+
 			</ul>
 
 			<ul class="navbar-nav right">
-				<li class="nav-item active"><a class="nav-link">안녕하세요! <jsp:getProperty
-							property="name" name="student" /> 님!
-				</a></li>
+				<li class="nav-item active"><a class="nav-link">접속자 : 
+						${sessionScope.login}&nbsp;&nbsp;</a></li>
 				<li class="nav-item"><a class="nav-link"
 					href="${pageContext.request.contextPath}/from/logout">로그아웃</a></li>
 			</ul>
