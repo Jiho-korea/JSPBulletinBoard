@@ -52,7 +52,7 @@ a, a:hover {
 							<td>${post.postNo}</td>
 							<td><a href="../from/post?postNo=${post.postNo}">${fn:replace(fn:replace(fn:replace(fn:replace(fn:replace(post.title, ' ', '&nbsp;'), '<', '&lt;'), '>', '&gt;'), '\\n', ''), '\"', '&quot;')}
 							</a></td>
-							<td>${post.sid}</td>
+							<td>${post.student.name}</td>
 							<td>${fn:split(fn:substring(post.postingdate, 0, 10),'-')[0]}년
 								${fn:split(fn:substring(post.postingdate, 0, 10),'-')[1]}월
 								${fn:split(fn:substring(post.postingdate, 0, 10),'-')[2]}일</td>

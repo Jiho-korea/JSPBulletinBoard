@@ -4,9 +4,23 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.mybatis.persistence.PostMapper">
-    <select id="listPost" parameterType="int" resultType="post">
-    	SELECT POST_NO, TITLE, SID,  POSTINGDATE, CONTENT, AVAILABLE FROM post WHERE AVAILABLE = 1 ORDER BY POST_NO DESC LIMIT 10 OFFSET #{offset}
+    <select id="listPost" parameterType="int" resultMap="postResultMap">
+    	SELECT POST_NO, TITLE, SID,  POSTINGDATE, CONTENT, AVAILABLE 
+    	FROM post 
+    	WHERE AVAILABLE = 1 ORDER BY POST_NO DESC LIMIT 10 OFFSET #{offset}
     </select>
+    <resultMap type="post" id="postResultMap">
+    	<id column="POST_NO" property="postNo"/>
+    	<result column="TITLE" property="title"/>
+    	<result column="SID" property="sid"/>
+    	<result column="POSTINGDATE" property="postingdate"/>
+    	<result column="CONTENT" property="content"/>
+    	<result column="AVAILABLE" property="available"/>
+    	<association select="selectStudent" property="student" column="{sid=SID}"/>
+    </resultMap>
+    
+    
+    
     
     <select id="selectPost" parameterType="post"  resultType="post">
     	SELECT POST_NO,TITLE, SID, POSTINGDATE, CONTENT, AVAILABLE FROM post WHERE AVAILABLE = 1 AND POST_NO = #{postNo}
