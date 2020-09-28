@@ -30,7 +30,7 @@
 				<tbody>
 					<tr>
 						<td style="width: 20%">작성자</td>
-						<td colspan="2">${post.sid}</td>
+						<td colspan="2">${post.student.name}</td>
 					</tr>
 					<tr>
 						<td>작성일자</td>

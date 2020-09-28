@@ -41,8 +41,13 @@
     	<result column="POSTINGDATE" property="postingdate"/>
     	<result column="CONTENT" property="content"/>
     	<result column="AVAILABLE" property="available"/>
+    	<association select="selectStudent" property="student" column="{sid=SID}"/>
     	<collection property="comments" javaType="java.util.ArrayList" ofType="comment" resultMap="commentResultMap"></collection>
     </resultMap>
+    
+    <select id="selectStudent" parameterType="student" resultType="student">
+    	SELECT * FROM STUDENT WHERE SID = #{sid}
+    </select>
     
     <resultMap type="comment" id="commentResultMap">
     	<id column="COMMENT_NO" property="commentNo"/>
