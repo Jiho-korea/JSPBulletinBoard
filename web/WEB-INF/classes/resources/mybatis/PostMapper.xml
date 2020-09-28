@@ -19,9 +19,6 @@
     	<association select="selectStudent" property="student" column="{sid=SID}"/>
     </resultMap>
     
-    
-    
-    
     <select id="selectPost" parameterType="post"  resultType="post">
     	SELECT POST_NO,TITLE, SID, POSTINGDATE, CONTENT, AVAILABLE FROM post WHERE AVAILABLE = 1 AND POST_NO = #{postNo}
     </select>
@@ -59,13 +56,15 @@
     	<collection property="comments" javaType="java.util.ArrayList" ofType="comment" resultMap="commentResultMap"></collection>
     </resultMap>
     
-    <select id="selectStudent" parameterType="student" resultType="student">
-    	SELECT * FROM STUDENT WHERE SID = #{sid}
-    </select>
     
     <resultMap type="comment" id="commentResultMap">
     	<id column="COMMENT_NO" property="commentNo"/>
     	<result column="COMMENT_CONTENT" property="commentContent"/>
     	<result column="COMMENT_SID" property="sid"/>
+    	<association select="selectStudent" property="student" column="{sid=COMMENT_SID}"/>
     </resultMap>
+    
+    <select id="selectStudent" parameterType="student" resultType="student">
+    	SELECT * FROM STUDENT WHERE SID = #{sid}
+    </select>
 </mapper>

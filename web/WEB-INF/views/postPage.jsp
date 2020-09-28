@@ -90,7 +90,7 @@
 					style="text-align: center; border: 1px solid #dddddd">
 					<c:forEach var="c" items="${post.comments}">
 						<tr>
-							<td width="30%">${c.sid}</td>
+							<td width="30%">${c.student.name}</td>
 							<td width="70%"><c:choose>
 									<c:when
 										test="${comment ne null && comment.commentNo eq c.commentNo}">
