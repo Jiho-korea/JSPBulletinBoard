@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import jspBulletinBoard.vo.BoardRequest;
 import jspBulletinBoard.vo.Post;
 
 public class PostDAO {
@@ -29,7 +30,8 @@ public class PostDAO {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		List<Object> postList = null;
 		try {
-			postList = sqlSession.selectList("org.mybatis.persistence.PostMapper.listPost", pageNumber * 10);
+			postList = sqlSession.selectList("org.mybatis.persistence.PostMapper.listPost",
+					new BoardRequest(pageNumber * 10, null));
 			if (!postList.isEmpty()) {
 				return true;
 			} else {
@@ -44,12 +46,15 @@ public class PostDAO {
 		}
 	}
 
-	public List<Object> listPost(int pageNumber) { // date_format(POSTINGDATE,'%Y-%m-%d') as POSTINGDATE 으로 간단하게 뽑을
-													// 수도있다.
+	public List<Object> listPost(BoardRequest boardRequest) { // date_format(POSTINGDATE,'%Y-%m-%d') as
+		// POSTINGDATE 으로
+		// 간단하게 뽑을
+		// 수도있다.
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		List<Object> postList = null;
 		try {
-			postList = sqlSession.selectList("org.mybatis.persistence.PostMapper.listPost", (pageNumber - 1) * 10);
+//			postList = sqlSession.selectList("org.mybatis.persistence.PostMapper.listPost", (pageNumber - 1) * 10);
+			postList = sqlSession.selectList("org.mybatis.persistence.PostMapper.listPost", boardRequest);
 			return postList;
 		} catch (Exception e) {
 			e.printStackTrace();

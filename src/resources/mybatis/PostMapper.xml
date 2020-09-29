@@ -4,67 +4,103 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.mybatis.persistence.PostMapper">
-    <select id="listPost" parameterType="int" resultMap="postResultMap">
-    	SELECT POST_NO, TITLE, SID,  POSTINGDATE, CONTENT, AVAILABLE 
-    	FROM post 
-    	WHERE AVAILABLE = 1 ORDER BY POST_NO DESC LIMIT 10 OFFSET #{offset}
-    </select>
-    <resultMap type="post" id="postResultMap">
-    	<id column="POST_NO" property="postNo"/>
-    	<result column="TITLE" property="title"/>
-    	<result column="SID" property="sid"/>
-    	<result column="POSTINGDATE" property="postingdate"/>
-    	<result column="CONTENT" property="content"/>
-    	<result column="AVAILABLE" property="available"/>
-    	<association select="selectStudent" property="student" column="{sid=SID}"/>
-    </resultMap>
-    
-    <select id="selectPost" parameterType="post"  resultType="post">
-    	SELECT POST_NO,TITLE, SID, POSTINGDATE, CONTENT, AVAILABLE FROM post WHERE AVAILABLE = 1 AND POST_NO = #{postNo}
-    </select>
-    
-    <delete id="deletePost" parameterType="post" >
-    	DELETE FROM post WHERE POST_NO = #{postNo}
-    </delete>
-    
-    <update id="updatePost" parameterType="post" >
-    	UPDATE post SET TITLE = #{title} , CONTENT = #{content}  WHERE POST_NO = #{postNo}
-    </update>
-    
-    <insert id="insertPost" parameterType="post" >
-    	insert into post(POST_NO,TITLE,SID,POSTINGDATE,CONTENT,AVAILABLE)  VALUES(#{postNo}, #{title}, #{sid}, SYSDATE(), #{content}, 1)
-    </insert>
-    
-    <select id="selectMaxPostNo" resultType="int">
-    	SELECT MAX(POST_NO)  + 1  AS POST_NO FROM post
-    </select>
-    
-    <select id="infoPost" parameterType="post" resultMap="postJoinCommentResultMap">
-        SELECT POST.POST_NO,TITLE, POST.SID, POSTINGDATE, CONTENT, AVAILABLE, COMMENT.COMMENT_NO, COMMENT.COMMENT_CONTENT, COMMENT.SID AS COMMENT_SID 
-        FROM POST LEFT OUTER JOIN COMMENT ON POST.POST_NO = COMMENT.POST_NO
-        WHERE AVAILABLE = 1 AND POST.POST_NO = #{postNo}
-        ORDER BY COMMENT.COMMENT_NO DESC
-    </select>
-    <resultMap type="post" id="postJoinCommentResultMap">
-    	<id column="POST_NO" property="postNo"/>
-    	<result column="TITLE" property="title"/>
-    	<result column="SID" property="sid"/>
-    	<result column="POSTINGDATE" property="postingdate"/>
-    	<result column="CONTENT" property="content"/>
-    	<result column="AVAILABLE" property="available"/>
-    	<association select="selectStudent" property="student" column="{sid=SID}"/>
-    	<collection property="comments" javaType="java.util.ArrayList" ofType="comment" resultMap="commentResultMap"></collection>
-    </resultMap>
-    
-    
-    <resultMap type="comment" id="commentResultMap">
-    	<id column="COMMENT_NO" property="commentNo"/>
-    	<result column="COMMENT_CONTENT" property="commentContent"/>
-    	<result column="COMMENT_SID" property="sid"/>
-    	<association select="selectStudent" property="student" column="{sid=COMMENT_SID}"/>
-    </resultMap>
-    
-    <select id="selectStudent" parameterType="student" resultType="student">
-    	SELECT * FROM STUDENT WHERE SID = #{sid}
-    </select>
+	<!-- <select id="listPost" parameterType="int" resultMap="postResultMap"> 
+		SELECT POST_NO, TITLE, SID, POSTINGDATE, CONTENT, AVAILABLE FROM post WHERE 
+		AVAILABLE = 1 ORDER BY POST_NO DESC LIMIT 10 OFFSET #{offset} </select> -->
+
+	<select id="listPost" parameterType="boardRequest"
+		resultMap="postResultMap">
+		SELECT POST_NO, TITLE, SID, POSTINGDATE, CONTENT, AVAILABLE
+		FROM post
+		<where>
+			<choose>
+				<when test='title neq null and title neq ""'>
+					AND AVAILABLE = 1 AND TITLE LIKE CONCAT('%',#{title},'%')
+				</when>
+				<otherwise>
+					AND AVAILABLE = 1 
+				</otherwise>
+			</choose>
+		</where>
+		ORDER BY POST_NO DESC LIMIT 10 OFFSET #{pageNumber}
+
+	</select>
+	<resultMap type="post" id="postResultMap">
+		<id column="POST_NO" property="postNo" />
+		<result column="TITLE" property="title" />
+		<result column="SID" property="sid" />
+		<result column="POSTINGDATE" property="postingdate" />
+		<result column="CONTENT" property="content" />
+		<result column="AVAILABLE" property="available" />
+		<association select="selectStudent" property="student"
+			column="{sid=SID}" />
+	</resultMap>
+
+	<select id="selectPost" parameterType="post" resultType="post">
+		SELECT
+		POST_NO,TITLE, SID, POSTINGDATE, CONTENT, AVAILABLE FROM post WHERE
+		AVAILABLE = 1 AND POST_NO = #{postNo}
+	</select>
+
+	<delete id="deletePost" parameterType="post">
+		DELETE FROM post WHERE
+		POST_NO = #{postNo}
+	</delete>
+
+	<update id="updatePost" parameterType="post">
+		UPDATE post SET TITLE =
+		#{title} , CONTENT = #{content} WHERE POST_NO =
+		#{postNo}
+	</update>
+
+	<insert id="insertPost" parameterType="post">
+		insert into
+		post(POST_NO,TITLE,SID,POSTINGDATE,CONTENT,AVAILABLE)
+		VALUES(#{postNo}, #{title}, #{sid}, SYSDATE(), #{content}, 1)
+	</insert>
+
+	<select id="selectMaxPostNo" resultType="int">
+		SELECT MAX(POST_NO) + 1
+		AS POST_NO FROM post
+	</select>
+
+	<select id="infoPost" parameterType="post"
+		resultMap="postJoinCommentResultMap">
+		SELECT POST.POST_NO,TITLE, POST.SID, POSTINGDATE, CONTENT,
+		AVAILABLE,
+		COMMENT.COMMENT_NO, COMMENT.COMMENT_CONTENT, COMMENT.SID AS
+		COMMENT_SID
+		FROM POST LEFT OUTER JOIN COMMENT ON POST.POST_NO =
+		COMMENT.POST_NO
+		WHERE AVAILABLE = 1 AND POST.POST_NO = #{postNo}
+		ORDER
+		BY COMMENT.COMMENT_NO DESC
+	</select>
+	<resultMap type="post" id="postJoinCommentResultMap">
+		<id column="POST_NO" property="postNo" />
+		<result column="TITLE" property="title" />
+		<result column="SID" property="sid" />
+		<result column="POSTINGDATE" property="postingdate" />
+		<result column="CONTENT" property="content" />
+		<result column="AVAILABLE" property="available" />
+		<association select="selectStudent" property="student"
+			column="{sid=SID}" />
+		<collection property="comments"
+			javaType="java.util.ArrayList" ofType="comment"
+			resultMap="commentResultMap"></collection>
+	</resultMap>
+
+
+	<resultMap type="comment" id="commentResultMap">
+		<id column="COMMENT_NO" property="commentNo" />
+		<result column="COMMENT_CONTENT" property="commentContent" />
+		<result column="COMMENT_SID" property="sid" />
+		<association select="selectStudent" property="student"
+			column="{sid=COMMENT_SID}" />
+	</resultMap>
+
+	<select id="selectStudent" parameterType="student"
+		resultType="student">
+		SELECT * FROM STUDENT WHERE SID = #{sid}
+	</select>
 </mapper>

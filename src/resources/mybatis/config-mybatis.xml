@@ -11,6 +11,7 @@
 		<typeAlias type="jspBulletinBoard.vo.Post" alias="post"/>
 		<typeAlias type="jspBulletinBoard.vo.Student" alias="student"/>
 		<typeAlias type="jspBulletinBoard.vo.Comment" alias="comment"/>
+		<typeAlias type="jspBulletinBoard.vo.BoardRequest" alias="boardRequest"/>
 	</typeAliases>
     <!-- 환경 스택 -->
 	<environments default="default">

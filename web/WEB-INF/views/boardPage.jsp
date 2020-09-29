@@ -93,7 +93,7 @@ a, a:hover {
 				<div class="form-group mx-sm-3 mb-2">
 					<label for="title" class="sr-only">제목</label> <input type="text"
 						name="title" id="title" class="form-control" placeholder="제목">
-
+					<input type="hidden" name="pageNumber" value="${pageNumber}">
 					<button type="submit" class="btn btn-primary pull-right">검색</button>
 				</div>
 

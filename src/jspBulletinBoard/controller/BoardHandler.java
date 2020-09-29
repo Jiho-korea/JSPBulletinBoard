@@ -11,6 +11,7 @@ import common.ComHandlerInterface;
 import jspBulletinBoard.dao.PostDAO;
 import jspBulletinBoard.exception.NonExistentPageException;
 import jspBulletinBoard.service.PostListService;
+import jspBulletinBoard.vo.BoardRequest;
 
 public class BoardHandler implements ComHandlerInterface {
 
@@ -19,15 +20,23 @@ public class BoardHandler implements ComHandlerInterface {
 		response.setContentType("text/html; charset=UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		int pageNumber = 1;
+		String title = null;
 		if (request.getParameter("pageNumber") != null) {
 			pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+		}
+		if (request.getParameter("title") != null) {
+			title = request.getParameter("title");
 		}
 		boolean nextPage = false;
 
 		PostListService postListService = new PostListService(new PostDAO());
 		nextPage = postListService.nextPage(pageNumber);
 		try {
-			List<Object> postList = postListService.postList(pageNumber);
+//			Map<String, Object> boardRequest = new HashMap<String, Object>();
+//			boardRequest.put("pageNumber", (pageNumber - 1) * 10);
+//			boardRequest.put("title", title);
+			BoardRequest boardRequest = new BoardRequest((pageNumber - 1) * 10, title);
+			List<Object> postList = postListService.postList(boardRequest);
 			request.setAttribute("pageNumber", pageNumber);
 			request.setAttribute("nextPage", nextPage);
 			request.setAttribute("postList", postList);

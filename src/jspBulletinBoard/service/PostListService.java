@@ -4,6 +4,7 @@ import java.util.List;
 
 import jspBulletinBoard.dao.PostDAO;
 import jspBulletinBoard.exception.NonExistentPageException;
+import jspBulletinBoard.vo.BoardRequest;
 
 public class PostListService {
 	private PostDAO postDAO;
@@ -19,11 +20,11 @@ public class PostListService {
 	}
 
 	// 해당 페이지의 게시글 리스트 가져옴
-	public List<Object> postList(int pageNumber) {
-		List<Object> postList = postDAO.listPost(pageNumber);
-		if (pageNumber != 1 && (postList == null || postList.isEmpty())) {
+	public List<Object> postList(BoardRequest boardRequest) {
+		List<Object> postList = postDAO.listPost(boardRequest);
+		if (boardRequest.getPageNumber() != 1 && (postList == null || postList.isEmpty())) {
 			// 존재 하지 않는 페이지 일때 Exception 발생
-			throw new NonExistentPageException("non-existent page" + pageNumber);
+			throw new NonExistentPageException("non-existent page" + boardRequest.getPageNumber());
 		}
 		return postList;
 	}
