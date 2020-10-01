@@ -32,10 +32,7 @@ public class BoardHandler implements ComHandlerInterface {
 		PostListService postListService = new PostListService(new PostDAO());
 		nextPage = postListService.nextPage(pageNumber);
 		try {
-//			Map<String, Object> boardRequest = new HashMap<String, Object>();
-//			boardRequest.put("pageNumber", (pageNumber - 1) * 10);
-//			boardRequest.put("title", title);
-			BoardRequest boardRequest = new BoardRequest((pageNumber - 1) * 10, title);
+			BoardRequest boardRequest = new BoardRequest(pageNumber, title);
 			List<Object> postList = postListService.postList(boardRequest);
 			request.setAttribute("pageNumber", pageNumber);
 			request.setAttribute("nextPage", nextPage);

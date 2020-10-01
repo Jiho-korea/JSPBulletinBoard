@@ -53,7 +53,6 @@ public class PostDAO {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		List<Object> postList = null;
 		try {
-//			postList = sqlSession.selectList("org.mybatis.persistence.PostMapper.listPost", (pageNumber - 1) * 10);
 			postList = sqlSession.selectList("org.mybatis.persistence.PostMapper.listPost", boardRequest);
 			return postList;
 		} catch (Exception e) {

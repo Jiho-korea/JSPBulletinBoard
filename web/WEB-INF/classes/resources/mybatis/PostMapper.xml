@@ -11,18 +11,31 @@
 	<select id="listPost" parameterType="boardRequest"
 		resultMap="postResultMap">
 		SELECT POST_NO, TITLE, SID, POSTINGDATE, CONTENT, AVAILABLE
-		FROM post
+
+		<choose>
+			<when test='title neq null and title neq ""'>
+				FROM (select * from POST where AVAILABLE = 1 ORDER BY POST_NO DESC LIMIT
+				10 OFFSET #{pageNumber}) as T
+			</when>
+			<otherwise>
+				FROM post
+			</otherwise>
+		</choose>
+
+
 		<where>
 			<choose>
 				<when test='title neq null and title neq ""'>
-					AND AVAILABLE = 1 AND TITLE LIKE CONCAT('%',#{title},'%')
+					AND TITLE LIKE CONCAT('%',#{title},'%') ORDER BY
+					POST_NO DESC
 				</when>
 				<otherwise>
-					AND AVAILABLE = 1 
+					AND AVAILABLE = 1 ORDER BY POST_NO DESC LIMIT 10 OFFSET
+					#{pageNumber}
 				</otherwise>
 			</choose>
 		</where>
-		ORDER BY POST_NO DESC LIMIT 10 OFFSET #{pageNumber}
+
 
 	</select>
 	<resultMap type="post" id="postResultMap">
