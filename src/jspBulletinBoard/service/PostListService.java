@@ -21,7 +21,7 @@ public class PostListService {
 
 	// 해당 페이지의 게시글 리스트 가져옴
 	public List<Object> postList(BoardRequest boardRequest) {
-		if (nextPage(boardRequest.getPageNumber() - 1) == false) {
+		if (boardRequest.getPageNumber() != 1 && nextPage(boardRequest.getPageNumber() - 1) == false) {
 			// 존재 하지 않는 페이지 일때 Exception 발생
 			throw new NonExistentPageException("non-existent page" + boardRequest.getPageNumber());
 		}
